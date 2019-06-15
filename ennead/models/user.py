@@ -48,7 +48,7 @@ class User(BaseModel):
         return hashed_password.hexdigest()
 
     def set_password(self, new_password: str) -> None:
-        """Generate salt and set new password to `User`"""
+        """Generate salt and set new password for `User`"""
 
         self.password_salt = secrets.token_urlsafe(32)
         self.password_sha512 = self._hash_password(new_password)
