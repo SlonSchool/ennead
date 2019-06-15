@@ -1,0 +1,16 @@
+/* Fix for Bootstrap 4 broken navbar baseline */
+.nav-link, .navbar-text, .nav-item > .btn {
+	margin-top: 0.125rem;
+}
+
+/* Fix for Bootstrap 4 broken navbar buttons & text margin */
+.nav-item > .btn, .navbar-text{
+	margin-left: 0.1rem;
+	margin-right: 0.1rem;
+}
+
+.btn.icon::before {
+	margin-right: 0.4em;
+	position: relative;
+	top: 0.05em;
+}

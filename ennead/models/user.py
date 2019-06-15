@@ -64,3 +64,9 @@ class User(BaseModel):
             self._hash_password(password),
             self.password_sha512
         )
+
+    @property
+    def is_teacher(self) -> bool:
+        """Check is user a teacher"""
+
+        return self.group == UserGroup.teacher

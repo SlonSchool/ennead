@@ -5,9 +5,11 @@ import datetime
 from flask import session, current_app, render_template, request, redirect, url_for
 from werkzeug.wrappers import Response
 
+from ennead.utils import require_not_logged_in
 from ennead.models.user import User, UserGroup
 
 
+@require_not_logged_in
 def register_page() -> Response:
     """GET /register: show registration page"""
 
@@ -19,6 +21,7 @@ def register_page() -> Response:
     return render_template('register.html', splash_text=splash_text)
 
 
+@require_not_logged_in
 def register() -> Response:
     """POST /register: process registration form"""
 
@@ -49,9 +52,10 @@ def register() -> Response:
     user.save()
 
     session['user_id'] = user.id
-    return redirect('/')
+    return redirect(url_for('index'))
 
 
+@require_not_logged_in
 def login_page() -> Response:
     """GET /login: show login page"""
 
@@ -63,6 +67,7 @@ def login_page() -> Response:
     return render_template('login.html', splash_text=splash_text)
 
 
+@require_not_logged_in
 def login() -> Response:
     """POST /login: process registration form"""
 
@@ -77,7 +82,7 @@ def login() -> Response:
 
     if user.check_password(request.form['password']):
         session['user_id'] = user.id
-        return redirect('/')
+        return redirect(url_for('index'))
     return redirect(url_for('login_page', splash='password'))
 
 
@@ -85,4 +90,4 @@ def logout() -> Response:
     """GET /logout: end user session"""
 
     del session['user_id']
-    return redirect('/')
+    return redirect(url_for('index'))

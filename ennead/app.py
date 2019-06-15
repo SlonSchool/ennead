@@ -5,7 +5,10 @@ from typing import Optional
 from flask import Flask, g, session
 
 from ennead.config import Config
+
 from ennead.views.auth import register, register_page, login, login_page, logout
+from ennead.views.tasks import index
+
 from ennead.models.base import database
 from ennead.models.user import User
 
@@ -36,6 +39,8 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     database.create_tables([User])
 
     app.before_request(inject_user)
+
+    app.add_url_rule('/', 'index', index)
 
     app.add_url_rule('/register', 'register_page', register_page)
     app.add_url_rule('/register', 'register', register, methods=['POST'])
