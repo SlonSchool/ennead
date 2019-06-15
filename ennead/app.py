@@ -1,6 +1,8 @@
+"""Main Ennead module for creating Flask app"""
+
 from typing import Optional
 
-from flask import Flask, g, session, escape
+from flask import Flask, g, session
 
 from ennead.config import Config
 from ennead.views.auth import register, register_page, login, login_page, logout
@@ -18,6 +20,7 @@ def inject_user() -> None:
         except User.DoesNotExist:
             return
         g.user = user
+
 
 def create_app(config_path: Optional[str] = None) -> Flask:
     """Create Flask app from JSON config (or with defaults)"""

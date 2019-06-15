@@ -1,16 +1,16 @@
+"""Views, used for registration and logging in"""
+
 import datetime
 
-from flask import Blueprint, session, current_app, render_template, request, redirect, url_for
+from flask import session, current_app, render_template, request, redirect, url_for
 from werkzeug.wrappers import Response
 
 from ennead.models.user import User, UserGroup
 
 
-auth = Blueprint('auth', __name__)
-
-
-# GET /register
 def register_page() -> Response:
+    """GET /register: show registration page"""
+
     splash_text = {
         'fields': 'Not all required fields filled',
         'exists': 'User with this username already exists'
@@ -18,8 +18,10 @@ def register_page() -> Response:
 
     return render_template('register.html', splash_text=splash_text)
 
-# POST /register
+
 def register() -> Response:
+    """POST /register: process registration form"""
+
     user = User()
 
     for field in ('username', 'first_name', 'surname'):
@@ -49,8 +51,10 @@ def register() -> Response:
     session['user_id'] = user.id
     return redirect('/')
 
-# GET /login
+
 def login_page() -> Response:
+    """GET /login: show login page"""
+
     splash_text = {
         'nouser': 'No such user',
         'password': 'Wrong password'
@@ -58,8 +62,10 @@ def login_page() -> Response:
 
     return render_template('login.html', splash_text=splash_text)
 
-# POST /login
+
 def login() -> Response:
+    """POST /login: process registration form"""
+
     for field in ('username', 'password'):
         if field not in request.form:
             return redirect(url_for('login_page', splash='fields'))
@@ -72,10 +78,11 @@ def login() -> Response:
     if user.check_password(request.form['password']):
         session['user_id'] = user.id
         return redirect('/')
-    else:
-        return redirect(url_for('login_page', splash='password'))
+    return redirect(url_for('login_page', splash='password'))
 
-# GET /logout
+
 def logout() -> Response:
+    """GET /logout: end user session"""
+
     del session['user_id']
     return redirect('/')

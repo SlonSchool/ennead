@@ -1,7 +1,8 @@
+"""App configuration class for Ennead"""
+
 import json
-from enum import Enum
 from typing import Dict
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, field
 
 from peewee import Database, SqliteDatabase, PostgresqlDatabase
 
@@ -34,7 +35,7 @@ class Config:
         return result
 
     @property
-    def DB_CLASS(self) -> Database:
+    def DB_CLASS(self) -> Database:  # pylint: disable=invalid-name
         """peewee class representing chosen database"""
 
         if self.DB_TYPE == 'sqlite':

@@ -1,3 +1,5 @@
+"""Module for Ennead user model and corresponding helper classes"""
+
 import hashlib
 import secrets
 import datetime
@@ -25,6 +27,8 @@ class User(BaseModel):
 
     Attributes:
         username: used to log in
+        email: email address used for notifications
+        group: is user teacher or student
         password_sha512: salted sha512 of user password
         password_salt: salt, used for password hashing
     """
