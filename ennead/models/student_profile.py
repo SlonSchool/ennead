@@ -8,11 +8,7 @@ from datetime import date
 from ennead.models.user import User
 from flask import Request
 
-
 from ennead.models.base import BaseModel
-if TYPE_CHECKING:
-    # pylint: disable=R0401
-    from ennead.models.thread import Thread  # noqa: F401
 
 
 class StudentProfile(BaseModel):
