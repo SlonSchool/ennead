@@ -11,6 +11,8 @@ from ennead.views.tasks import index
 
 from ennead.models.base import database
 from ennead.models.user import User
+from ennead.models.task import TaskSet, Task
+from ennead.models.thread import Thread, Post
 
 
 def inject_user() -> None:
@@ -36,7 +38,7 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     app.config.from_object(config)
 
     database.initialize(config.DB_CLASS(config.DB_NAME, **config.DB_PARAMS))
-    database.create_tables([User])
+    database.create_tables([User, Task, TaskSet, Thread, Post])
 
     app.before_request(inject_user)
 
