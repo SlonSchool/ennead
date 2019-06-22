@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Ennead / Анкета ученика{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-4 offset-4">
+			<form method="POST">
+				<div class="form-group row">
+					<label class="col-12" for="grade">Класс, который вы закончили:</label>
+					<input class="col-12 form-control" type="number" name="grade" id="grade" required value="{{ student_profile.grade }}">
+				</div>
+				<div class="form-group row">
+					<label class="col-12" for="city">Город, в котором вы живёте:</label>
+					<input class="col-12 form-control" name="city" id="city" required value="{{ student_profile.city }}">
+				</div>
+				<div class="form-group row">
+					<label class="col-12" for="birth_date">Дата вашего рождения:</label>
+					<input class="col-12 form-control" type="date" name="birth_date" id="birth_date" required value="{{ student_profile.birth_date }}">
+				</div>
+				<div class="form-group row">
+					<label class="col-12" for="sex">Ваш пол:</label>
+                    <select class="col-12 form-control" name="sex" id="sex" required value="{{ student_profile.sex }}">
+                        <option value="1">Мужской</option>
+                        <option value="0">Женский</option>
+                    </select>
+				</div>
+				<div class="form-group row">
+					<label class="col-12" for="allergy">Перечислите всё, на что у вас аллергия:</label>
+                    <textarea class="col-12 form-control" type="textarea" name="allergy" id="allergy" required>{{ student_profile.allergy }}</textarea>
+				</div>
+				<div class="form-group row">
+					<label class="col-12" for="communication">Ссылка на вас в социальных сетях (vk, telegram):</label>
+					<input class="col-12 form-control" name="communication" id="communication" required value="{{ student_profile.communication }}">
+				</div>
+				<div class="form-group row">
+					<label class="col-12" for="telephone">Ваш мобильный телефон:</label>
+					<input class="col-12 form-control" name="telephone" id="telephone" required value="{{ student_profile.telephone }}">
+				</div>
+				<div class="form-group row">
+					<label class="col-12" for="parent_information">Контактный телефон и имя вашего родителя:</label>
+					<textarea class="col-12 student-profile-area form-control" type="textarea" name="parent_information" id="parent_information" required >{{ student_profile.parent_information }}</textarea>
+				</div>
+				<input type="submit" class="btn btn-primary" value="Сохранить">
+			</form>
+		</div>
+	</div>
+{% endblock %}
