@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, List
 
 from peewee import BooleanField, CharField, TextField, IntegerField, ForeignKeyField
 
+from ennead.utils import render_markdown
 from ennead.models.base import BaseModel
 if TYPE_CHECKING:
     # pylint: disable=R0401
@@ -44,3 +45,9 @@ class Task(BaseModel):
     task_set: TaskSet = ForeignKeyField(TaskSet, backref='tasks')
 
     threads: List['Thread']
+
+    @property
+    def html_description(self):
+        """`Task` description in HTML"""
+
+        return render_markdown(self.description)

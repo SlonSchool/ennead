@@ -6,6 +6,11 @@ from functools import wraps
 from flask import g, abort, redirect, url_for
 from werkzeug.wrappers import Response
 
+from markdown import Markdown
+
+
+MARKDOWN_ENGINE = Markdown(extensions=['mdx_math'])
+
 
 def require_logged_in(func: Callable) -> Callable:
     """Make endpoint require logged in user"""
@@ -42,3 +47,9 @@ def require_teacher(func: Callable) -> Callable:
         abort(403)
 
     return wrapped
+
+
+def render_markdown(markdown: str) -> str:
+    """Convert Markdown to HTML"""
+
+    return MARKDOWN_ENGINE.convert(markdown)
