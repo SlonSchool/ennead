@@ -24,6 +24,13 @@
 				<li class="nav-item">
 					<a class="nav-link" href="{{url_for('index')}}">Задачи</a>
 				</li>
+				{% if g.user.is_teacher %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{url_for('adm_task_list_page')}}">
+							Редактирование задач
+						</a>
+					</li>
+				{% endif %}
 			</ul>
 			<ul class="navbar-nav">
 				{% if not g.user %}

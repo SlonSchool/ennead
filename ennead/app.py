@@ -8,6 +8,7 @@ from ennead.config import Config
 
 from ennead.views.auth import register, register_page, login, login_page, logout
 from ennead.views.tasks import index
+from ennead.views.admin import adm_task_list_page, task_edit_page, task_edit, task_delete
 
 from ennead.models.base import database
 from ennead.models.user import User
@@ -49,6 +50,11 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     app.add_url_rule('/login', 'login_page', login_page)
     app.add_url_rule('/login', 'login', login, methods=['POST'])
     app.add_url_rule('/logout', 'logout', logout)
+
+    app.add_url_rule('/adm/tasks', 'adm_task_list_page', adm_task_list_page)
+    app.add_url_rule('/adm/tasks/<int:task_id>', 'task_edit_page', task_edit_page)
+    app.add_url_rule('/adm/tasks', 'task_edit', task_edit, methods=['POST'])
+    app.add_url_rule('/adm/tasks/<int:task_id>/delete', 'task_delete', task_delete, methods=['POST'])
 
     return app
 
