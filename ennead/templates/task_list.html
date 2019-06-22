@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-12">
+    {% if tasks %}
+        <ul class="list-group">
+            {% for task in tasks %}
+            <li class="list-group-item">{{ task.name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2>
+        На сегодня задач нет!
+        </h2>
+    {% endif %}
+    </div>
+</div>
