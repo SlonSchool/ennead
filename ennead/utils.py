@@ -3,7 +3,7 @@
 from typing import Any, Callable
 from functools import wraps
 
-from flask import g, redirect, url_for
+from flask import g, abort, redirect, url_for
 from werkzeug.wrappers import Response
 
 
@@ -27,5 +27,18 @@ def require_not_logged_in(func: Callable) -> Callable:
         if g.user:
             return redirect(url_for('index'))
         return func(*args, **kwargs)
+
+    return wrapped
+
+
+def require_teacher(func: Callable) -> Callable:
+    """Make endpoint require logged in teacher"""
+
+    # pylint: disable=inconsistent-return-statements
+    @wraps(func)
+    def wrapped(*args: Any, **kwargs: Any) -> Response:
+        if g.user and g.user.is_teacher:
+            return func(*args, **kwargs)
+        abort(403)
 
     return wrapped
