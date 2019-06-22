@@ -40,14 +40,3 @@ class StudentProfile(BaseModel):
 
     user: User = ForeignKeyField(User, backref='student_profiles')
 
-    def set_profile(self, request: Request, user: User = None) -> None:
-        for field in ('grade', 'city', 'birth_date', 'allergy', 'sex',
-                      'communication', 'parent_information'):
-            setattr(self, field, request.form[field])
-
-        # TODO: add telephone validation
-        self.telephone = request.form['telephone']
-
-        if user:
-            self.user = user
-

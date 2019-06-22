@@ -15,11 +15,11 @@ from ennead.models.student_profile import StudentProfile
 def read_student_profile() -> Response:
     """GET /student_profile: read profile page"""
 
-    student_profile = StudentProfile()
-
-    student_profile_query = StudentProfile.select().where(StudentProfile.user == g.user)
-    if student_profile_query.exists():
-        student_profile = student_profile_query[0]
+    student_profile = None
+    try:
+        student_profile = g.user.student_profiles[0]
+    except:
+        student_profile = StudentProfile()
 
     return render_template('student_profile.html', student_profile=student_profile)
 
@@ -28,14 +28,20 @@ def read_student_profile() -> Response:
 def create_update_student_profile() -> Response:
     """POST /student_profile: update student profile"""
 
-    student_profile = StudentProfile()
+    student_profile = None
+    try:
+        student_profile = g.user.student_profiles[0]
+    except:
+        student_profile = StudentProfile()
 
-    student_profile_query = StudentProfile.select().where(StudentProfile.user == g.user)
-    if student_profile_query.exists():
-        student_profile = student_profile_query[0]
-        student_profile.set_profile(request)
-    else:
-        student_profile.set_profile(request, g.user)
+    for field in ('grade', 'city', 'birth_date', 'allergy', 'sex',
+                  'communication', 'parent_information'):
+        setattr(student_profile, field, request.form[field])
+
+    # TODO: add telephone validation
+    student_profile.telephone = request.form['telephone']
+
+    student_profile.user = g.user
 
     student_profile.save()
     return redirect(url_for('read_student_profile'))

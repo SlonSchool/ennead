@@ -53,7 +53,7 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     app.add_url_rule('/logout', 'logout', logout)
 
     app.add_url_rule('/student_profile', 'read_student_profile', read_student_profile)
-    app.add_url_rule('/student_profile', 'create_student_profile', create_update_student_profile, methods=['POST', 'PUT'])
+    app.add_url_rule('/student_profile', 'create_student_profile', create_update_student_profile, methods=['POST'])
 
     return app
 
