@@ -8,11 +8,13 @@ from ennead.config import Config
 
 from ennead.views.auth import register, register_page, login, login_page, logout
 from ennead.views.tasks import index
+from ennead.views.student_profile import create_update_student_profile, read_student_profile
 
 from ennead.models.base import database
 from ennead.models.user import User
 from ennead.models.task import TaskSet, Task
 from ennead.models.thread import Thread, Post
+from ennead.models.student_profile import StudentProfile
 
 
 def inject_user() -> None:
@@ -38,7 +40,7 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     app.config.from_object(config)
 
     database.initialize(config.DB_CLASS(config.DB_NAME, **config.DB_PARAMS))
-    database.create_tables([User, Task, TaskSet, Thread, Post])
+    database.create_tables([User, Task, TaskSet, Thread, Post, StudentProfile])
 
     app.before_request(inject_user)
 
@@ -50,8 +52,12 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     app.add_url_rule('/login', 'login', login, methods=['POST'])
     app.add_url_rule('/logout', 'logout', logout)
 
+    app.add_url_rule('/student_profile', 'read_student_profile', read_student_profile)
+    app.add_url_rule('/student_profile', 'create_student_profile', create_update_student_profile, methods=['POST'])
+
     return app
 
 
 if __name__ == '__main__':
     create_app('ennead.json').run()
+
