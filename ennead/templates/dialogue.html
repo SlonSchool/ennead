@@ -6,9 +6,7 @@
 	<div class="row">
 		<div class="col-4 offset-4">
 			<h3>{{ task.order }}{{ task.name }}</h3>
-			<p class="score">Максимальный балл: {{ task.base_score }}</p>
-			<p class="task-description">{{ task.description }}</p>
-			<!-- <p>Отладочная инфа: {{sorted_posts}}</p> -->
+			<p class="score">Балл: {{ thread.score }} из {{ task.base_score }}</p>
 		</div>
 	</div>
 	<div class="row">
@@ -30,14 +28,14 @@
 			{% endfor %}
 		</div>
 	</div>
-	<div class="row post-form">
+	<div class="row">
 		<div class="col-8 offset-2">
 			<hr/>
-			<form action="{{ url_for('send_post_to_thread', thread_id=thread.id) }}" method="POST">
-				<textarea name="text" placeholder="Решение задачи"></textarea>
+			<form id="post-form" action="{{ url_for('send_post_to_thread', thread_id=thread.id) }}" method="POST">
+				<textarea name="text" placeholder="Решение задачи" id="post-textarea"></textarea>
 				{% if g.user.is_teacher: %}
 					<div class="form-check">
-					  <input class="form-check-input" type="checkbox" name="hide_from_student" value="hide_from_student" checked="checked" id="hide_from_student">
+					  <input class="form-check-input" type="checkbox" name="hide_from_student" value="hide_from_student" id="hide_from_student">
 					  <label class="form-check-label" for="hide_from_student">
 					    Скрыть комментарий от школьника
 					  </label>
@@ -47,4 +45,22 @@
 			</form>
 		</div>
 	</div>
+	{% if g.user.is_teacher %}
+		<hr/>
+		<div class="row score-form">
+			<div class="col-4 offset-4">
+				<form action="{{ url_for('update_score', thread_id=thread.id) }}" method="POST">
+					<div class="form-group row">
+						<label for="score-setter" class="col-form-label col-2">Балл:</label>
+						<div class="col-5">
+							<input type="text" pattern="\d+(\.\d*)?" name="score" value={{ thread.score }} class="form-control" id="score-setter">
+						</div>
+						<div class="col-5">
+							<button class="btn btn-primary" type="submit">Оценить</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+    {% endif %}
 {% endblock %}

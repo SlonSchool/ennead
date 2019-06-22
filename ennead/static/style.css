@@ -66,8 +66,6 @@
 	font-size: 0.75em;
 	color: #555;
 }
-.post-form {
-}
-.post-form textarea {
+#post-textarea {
 	width: 100%;
 }

@@ -31,15 +31,20 @@ def teacher_thread_page(task_id: int, student_id: int) -> Response:
 @require_logged_in
 def send_post_to_thread(thread_id: int) -> Response:
     thread = Thread.get_by_id(thread_id)
-    if g.user.is_teacher or (g.user.is_student and thread.student == g.user):
-        text = request.form['text']
+    text = request.form['text'].strip()
+    if len(text) != 0 and (g.user.is_teacher or (g.user.is_student and thread.student == g.user)):
         hide_from_student = False
         if g.user.is_teacher:
             hide_from_student = request.form.get('hide_from_student', False)
         post = Post.create(text=text, date=datetime.datetime.now(), author=g.user, thread=thread, hide_from_student=hide_from_student)
-        if g.user.is_student:
-            return redirect(url_for('student_thread_page', task_id=thread.task.id))
-        if g.user.is_teacher:
-            return redirect(url_for('teacher_thread_page', task_id=thread.task.id, student_id=thread.student.id))
-    else:
-        pass
+    if g.user.is_student:
+        return redirect(url_for('student_thread_page', task_id=thread.task.id))
+    if g.user.is_teacher:
+        return redirect(url_for('teacher_thread_page', task_id=thread.task.id, student_id=thread.student.id))
+
+@require_logged_in_as_teacher
+def update_score(thread_id: int) -> Response:
+    thread = Thread.get_by_id(thread_id)
+    thread.score = request.form.get('score', thread.score)
+    thread.save()
+    return redirect(url_for('teacher_thread_page', task_id=thread.task.id, student_id=thread.student.id))
