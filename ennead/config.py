@@ -22,6 +22,7 @@ class Config:
     DB_PARAMS: Dict[str, str] = field(default_factory=dict)
     TEACHER_SECRET: str = 'muchsecret'
     SECRET_KEY: str = 'boomboomboom'  # For Flask
+    UPLOAD_DIR: str = '/tmp/ennead'
 
     @classmethod
     def from_filename(cls, filename: str) -> 'Config':
