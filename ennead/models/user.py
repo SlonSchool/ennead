@@ -4,10 +4,14 @@ import hashlib
 import secrets
 import datetime
 from enum import IntEnum
+from typing import TYPE_CHECKING, List
 
 from peewee import CharField, DateField, IntegerField, FixedCharField
 
 from ennead.models.base import BaseModel
+if TYPE_CHECKING:
+    # pylint: disable=R0401
+    from ennead.models.thread import Thread  # noqa: F401
 
 
 class UserGroup(IntEnum):
@@ -31,6 +35,7 @@ class User(BaseModel):
         group: is user teacher or student
         password_sha512: salted sha512 of user password
         password_salt: salt, used for password hashing
+        threads: list of `Thread`s this `User` belongs to as student
     """
 
     username: str = CharField(32, unique=True)
@@ -42,6 +47,8 @@ class User(BaseModel):
     group: UserGroup = IntegerField()
     password_sha512: str = FixedCharField(128)
     password_salt: str = FixedCharField(32)
+
+    threads: List['Thread']
 
     def _hash_password(self, password: str) -> str:
         """Hash password using stored salt"""
@@ -70,3 +77,11 @@ class User(BaseModel):
         """Check is user a teacher"""
 
         return self.group == UserGroup.teacher
+
+    @property
+    def score(self) -> int:
+        """Get `User`s score in current task set"""
+
+        return sum(
+            thread.score for thread in self.threads if thread.task.task_set.active
+        )
