@@ -15,10 +15,9 @@ from ennead.models.student_profile import StudentProfile
 def read_student_profile() -> Response:
     """GET /student_profile: read profile page"""
 
-    student_profile = None
-    try:
+    if g.user.student_profiles:
         student_profile = g.user.student_profiles[0]
-    except:
+    else:
         student_profile = StudentProfile()
 
     return render_template('student_profile.html', student_profile=student_profile)
@@ -28,10 +27,9 @@ def read_student_profile() -> Response:
 def create_update_student_profile() -> Response:
     """POST /student_profile: update student profile"""
 
-    student_profile = None
-    try:
+    if g.user.student_profiles:
         student_profile = g.user.student_profiles[0]
-    except:
+    else:
         student_profile = StudentProfile()
 
     for field in ('grade', 'city', 'birth_date', 'allergy', 'sex',
