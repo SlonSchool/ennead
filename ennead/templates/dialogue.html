@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{{task.order}}. {{ task.name }}{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-4 offset-4">
+			<h3>{{ task.order }}{{ task.name }}</h3>
+			<p class="score">Максимальный балл: {{ task.base_score }}</p>
+			<p class="task-description">{{ task.description }}</p>
+			<!-- <p>Отладочная инфа: {{sorted_posts}}</p> -->
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-8 offset-2">
+			{% for post in thread.ordered_posts(show_hidden=False): %}
+				<div class="post {{ 'post-teacher' if post.author.is_teacher else 'post-student' }}">
+					<div class="post-body">{{ post.text }}</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-8 offset-2">
+			<form class="message-form">
+				<textarea name="text" placeholder="Решение задачи"></textarea>
+				<button class="btn btn-primary float-right" type="submit">Отправить</button>
+			</form>
+		</div>
+	</div>
+{% endblock %}

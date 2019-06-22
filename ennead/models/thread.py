@@ -3,7 +3,7 @@
 import datetime
 from typing import List
 
-from peewee import DateTimeField, IntegerField, TextField, ForeignKeyField
+from peewee import DateTimeField, IntegerField, DecimalField, TextField, ForeignKeyField
 
 from ennead.models.user import User
 from ennead.models.task import Task
@@ -21,10 +21,18 @@ class Thread(BaseModel):
     """
 
     task: Task = ForeignKeyField(Task, backref='threads')
-    score: int = IntegerField()
+    score: float = DecimalField(default=0)
     student: User = ForeignKeyField(User, backref='threads')
 
     posts: List['Post']
+
+    def ordered_posts(self, show_hidden=False):
+        posts = self.posts
+        if show_hidden:
+            posts = filter(lambda post: not post.hidden, posts)
+        posts = sorted(posts, key=lambda post: post.date)
+        return posts
+    
 
 
 class Post(BaseModel):

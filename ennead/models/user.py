@@ -82,7 +82,7 @@ class User(BaseModel):
         return self.group == UserGroup.teacher
 
     @property
-    def score(self) -> int:
+    def score(self) -> float:
         """Get `User`s score in current task set"""
 
         return sum(

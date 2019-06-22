@@ -27,6 +27,10 @@ class TaskSet(BaseModel):
     tasks: List['Task']
     threads: List['Thread']
 
+    @property
+    def ordered_tasks(self) -> List["Task"]:
+        return sorted(self.tasks, key=lambda task: task.order_num)
+
 
 class Task(BaseModel):
     """One task for student
@@ -36,12 +40,14 @@ class Task(BaseModel):
         description: `Task` description in Markdown
         base_score: basic maximal score for `Task`
         task_set: set this `Task` belongs to
+        order_num: order of this `Task` in a `TaskSet`
         threads: list of `Thread`s about this `Task`
     """
 
     name: str = CharField()
     description: str = TextField()
     base_score: int = IntegerField()
+    order_num: int = IntegerField()
     task_set: TaskSet = ForeignKeyField(TaskSet, backref='tasks')
 
     threads: List['Thread']

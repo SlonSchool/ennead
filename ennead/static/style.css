@@ -43,3 +43,24 @@
 	margin-right: auto;
 	max-width: 70%;
 }
+
+.post {
+	border: 1px solid black;
+	margin: 10px 0;
+	padding: 10px;
+}
+.post-teacher {
+	text-align: right;
+	background-color: lightblue;
+}
+.post-student {
+	text-align: left;
+	background-color: white;
+}
+
+.message-form {
+
+}
+.message-form textarea {
+	width: 100%;
+}
