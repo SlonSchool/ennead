@@ -3,7 +3,7 @@
 import datetime
 from typing import List
 
-from peewee import DateTimeField, IntegerField, DecimalField, TextField, ForeignKeyField
+from peewee import DateTimeField, IntegerField, DecimalField, TextField, BooleanField, ForeignKeyField
 
 from ennead.models.user import User
 from ennead.models.task import Task
@@ -28,8 +28,8 @@ class Thread(BaseModel):
 
     def ordered_posts(self, show_hidden=False):
         posts = self.posts
-        if show_hidden:
-            posts = filter(lambda post: not post.hidden, posts)
+        if not show_hidden:
+            posts = filter(lambda post: not post.hide_from_student, posts)
         posts = sorted(posts, key=lambda post: post.date)
         return posts
     
@@ -43,9 +43,11 @@ class Post(BaseModel):
         date: date this `Post` was posted
         author: `User` who wrote this post
         thread: `Thread` this task belongs to
+        hide_from_student: marks `Post` as auxiliary (for teacher's use only)
     """
 
     text: str = TextField()
     date: datetime.datetime = DateTimeField()
     author: User = ForeignKeyField(User, backref='+')  # '+' means 'no backref'
+    hide_from_student: bool = BooleanField(default=False)
     thread: Thread = ForeignKeyField(Thread, backref='posts')

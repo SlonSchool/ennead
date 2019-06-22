@@ -13,17 +13,36 @@
 	</div>
 	<div class="row">
 		<div class="col-8 offset-2">
-			{% for post in thread.ordered_posts(show_hidden=False): %}
-				<div class="post {{ 'post-teacher' if post.author.is_teacher else 'post-student' }}">
+			{% for post in thread.ordered_posts(show_hidden=g.user.is_teacher): %}
+				{% if post.author.is_teacher %}
+					{% if post.hide_from_student %}
+						{% set post_klass = 'post-teacher-hidden' %}
+					{% else %}
+						{% set post_klass = 'post-teacher' %}
+					{% endif %}
+				{%else%}
+					{% set post_klass = 'post-student' %}
+				{%endif%}
+				<div class="post {{post_klass}} ">
+					<div class="post-date">{{ post.date.strftime('%d %B, %H:%M') }}</div>
 					<div class="post-body">{{ post.text }}</div>
 				</div>
 			{% endfor %}
 		</div>
 	</div>
-	<div class="row">
+	<div class="row post-form">
 		<div class="col-8 offset-2">
-			<form class="message-form">
+			<hr/>
+			<form action="{{ url_for('send_post_to_thread', thread_id=thread.id) }}" method="POST">
 				<textarea name="text" placeholder="Решение задачи"></textarea>
+				{% if g.user.is_teacher: %}
+					<div class="form-check">
+					  <input class="form-check-input" type="checkbox" name="hide_from_student" value="hide_from_student" checked="checked" id="hide_from_student">
+					  <label class="form-check-label" for="hide_from_student">
+					    Скрыть комментарий от школьника
+					  </label>
+					</div>
+				{% endif %}
 				<button class="btn btn-primary float-right" type="submit">Отправить</button>
 			</form>
 		</div>

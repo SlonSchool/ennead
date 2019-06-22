@@ -51,16 +51,23 @@
 }
 .post-teacher {
 	text-align: right;
-	background-color: lightblue;
+	background-color: #ccf;
+}
+.post-teacher-hidden {
+	text-align: right;
+	background-color: lightgray;
 }
 .post-student {
 	text-align: left;
 	background-color: white;
 }
 
-.message-form {
-
+.post-date {
+	font-size: 0.75em;
+	color: #555;
 }
-.message-form textarea {
+.post-form {
+}
+.post-form textarea {
 	width: 100%;
 }

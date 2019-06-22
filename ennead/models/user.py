@@ -76,6 +76,12 @@ class User(BaseModel):
         )
 
     @property
+    def is_student(self) -> bool:
+        """Check is user a student"""
+
+        return self.group == UserGroup.student
+
+    @property
     def is_teacher(self) -> bool:
         """Check is user a teacher"""
 

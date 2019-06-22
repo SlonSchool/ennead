@@ -55,4 +55,5 @@ post_1_1 = Post.create(thread=thread_1, text='Первый нах', date = datet
 post_1_2 = Post.create(thread=thread_1, text='Так себе решение. Пока 0 баллов', date = datetime.datetime.now(), author=teacher)
 post_1_3 = Post.create(thread=thread_1, text='Ну ладно, 2+2=3', date = datetime.datetime.now(), author=student)
 post_1_3 = Post.create(thread=thread_1, text='Ой, 2+2=4', date = datetime.datetime.now(), author=student)
-post_1_4 = Post.create(thread=thread_1, text='Ок, угадал. 1 балл', date = datetime.datetime.now(), author=teacher)
+post_1_4 = Post.create(thread=thread_1, text='Это вот серьёзно сейчас было?', hide_from_student=True, date = datetime.datetime.now(), author=teacher)
+post_1_5 = Post.create(thread=thread_1, text='Ок, угадал. 1 балл', date = datetime.datetime.now(), author=teacher)
