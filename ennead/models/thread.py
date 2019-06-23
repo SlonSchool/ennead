@@ -9,6 +9,7 @@ from ennead.models.user import User
 from ennead.models.task import Task
 from ennead.models.base import BaseModel
 
+from ennead.utils import render_markdown
 
 class Thread(BaseModel):
     """Student-with-teachers chat about `Task`
@@ -51,3 +52,9 @@ class Post(BaseModel):
     author: User = ForeignKeyField(User, backref='+')  # '+' means 'no backref'
     hide_from_student: bool = BooleanField(default=False)
     thread: Thread = ForeignKeyField(Thread, backref='posts')
+
+    @property
+    def html_description(self):
+        """`Post` description in HTML"""
+
+        return render_markdown(self.text)

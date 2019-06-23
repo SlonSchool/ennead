@@ -44,7 +44,7 @@ task_set = TaskSet.create(name='Текущая заочка', active=True)
 task_1_1 = Task.create(order_num=1, name='Очень старая задача #1', description='Когда трава была зеленее', base_score=1, task_set=prev_task_set)
 task_1_2 = Task.create(order_num=2, name='Очень старая задача #2', description='И задачи были забористей', base_score=1, task_set=prev_task_set)
 
-task_2_1 = Task.create(order_num=1, name='Задача первая', description='Самая первая', base_score=1, task_set=task_set)
+task_2_1 = Task.create(order_num=1, name='Задача первая', description='Начнём с простого: $$2+2=?$$', base_score=1, task_set=task_set)
 task_2_2 = Task.create(order_num=3, name='Задача последняя', description='Хардкор', base_score=42, task_set=task_set)
 task_2_3 = Task.create(order_num=2, name='Задача два', description='Посложнее', base_score=5, task_set=task_set)
 
@@ -53,7 +53,7 @@ thread_2 = Thread.create(student=student, task=task_2_2)
 
 post_1_1 = Post.create(thread=thread_1, text='Первый нах', date = datetime.datetime.now(), author=student)
 post_1_2 = Post.create(thread=thread_1, text='Так себе решение. Пока 0 баллов', date = datetime.datetime.now(), author=teacher)
-post_1_3 = Post.create(thread=thread_1, text='Ну ладно, 2+2=3', date = datetime.datetime.now(), author=student)
-post_1_3 = Post.create(thread=thread_1, text='Ой, 2+2=4', date = datetime.datetime.now(), author=student)
+post_1_3 = Post.create(thread=thread_1, text='Ну ладно, \\(2+2=3\\)', date = datetime.datetime.now(), author=student)
+post_1_3 = Post.create(thread=thread_1, text='Ой, $$2+2=4$$', date = datetime.datetime.now(), author=student)
 post_1_4 = Post.create(thread=thread_1, text='Это вот серьёзно сейчас было?', hide_from_student=True, date = datetime.datetime.now(), author=teacher)
 post_1_5 = Post.create(thread=thread_1, text='Ок, угадал. 1 балл', date = datetime.datetime.now(), author=teacher)

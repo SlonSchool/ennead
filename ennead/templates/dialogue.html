@@ -7,6 +7,7 @@
 		<div class="col-4 offset-4">
 			<h3>{{ task.order_num }}. {{ task.name }}</h3>
 			<p class="score">Балл: {{ thread.score }} из {{ task.base_score }}</p>
+			<div class="task-description">{{ task.html_description|safe }}</div>
 		</div>
 	</div>
 	<div class="row">
@@ -28,7 +29,7 @@
 						{% endif %}
 						<div class="post-date">{{ post.date.strftime('%d %B, %H:%M') }}</div>
 					</div>
-					<div class="post-body">{{ post.text }}</div>
+					<div class="post-body">{{ post.html_description|safe }}</div>
 				</div>
 			{% endfor %}
 		</div>

@@ -7,6 +7,7 @@ from flask import session, current_app, render_template, request, redirect, url_
 from werkzeug.wrappers import Response
 
 from ennead.utils import require_logged_in, require_teacher, require_student
+from ennead.utils import render_markdown
 from ennead.models.user import User, UserGroup
 from ennead.models.task import Task
 from ennead.models.thread import Thread, Post
@@ -32,7 +33,14 @@ def teacher_thread_page(task_id: int, student_id: int) -> Response:
 def send_post_to_thread(thread_id: int) -> Response:
     thread = Thread.get_by_id(thread_id)
     text = request.form['text'].strip()
-    if len(text) != 0 and (g.user.is_teacher or (g.user.is_student and thread.student == g.user)):
+    correct_message = (len(text) != 0)
+    try:
+        render_markdown(text)
+    except:
+        correct_message = False
+        # Not sure is it possible to create incorrect markdown, but if yes, we shouldn't store it
+        # ToDo: redirect back to a dialogue, restoring a message draft not to lose it
+    if correct_message and (g.user.is_teacher or (g.user.is_student and thread.student == g.user)):
         hide_from_student = False
         if g.user.is_teacher:
             hide_from_student = request.form.get('hide_from_student', False)
