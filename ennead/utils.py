@@ -7,9 +7,18 @@ from flask import g, abort, redirect, url_for
 from werkzeug.wrappers import Response
 
 from markdown import Markdown
+from markdown.extensions import Extension as MarkdownExtension
 
 
-MARKDOWN_ENGINE = Markdown(extensions=['mdx_math'])
+class DisallowHTML(MarkdownExtension):
+    """Simple extension for Python-Markdown that disallows HTML"""
+
+    def extendMarkdown(self, md):
+        md.preprocessors.deregister('html_block')
+        md.inlinePatterns.deregister('html')
+
+
+MARKDOWN_ENGINE = Markdown(extensions=['mdx_math', 'fenced_code', DisallowHTML()])
 
 
 def require_logged_in(func: Callable) -> Callable:
