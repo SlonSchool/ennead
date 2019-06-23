@@ -22,8 +22,12 @@
 		<link rel="stylesheet" href="/static/icons.css">
 		<!-- Entypo pictograms by Daniel Bruce — www.entypo.com -->
 
+		<script src="/static/editor.js"></script>
+
 		{% block head %}
 		{% endblock %}
+
+		{% from 'editor.html' import markdown_editor %}
 	</head>
 	<body>
 		<nav class="navbar navbar-light bg-light align-baseline navbar-toggleable-sm navbar-expand-sm mb-2">

@@ -1,0 +1,25 @@
+{% macro markdown_editor(text='', name='', id='') %}
+{% if not id %}
+	{% set id = name %}
+{% endif %}
+<div class="markdown-editor">
+	<ul class="nav nav-tabs markdown-editor-tabs">
+		<li class="nav-item markdown-editor-nav-item">
+			<a class="nav-link active markdown-editor-source-link" href="#">
+				Редактирование
+			</a>
+		</li>
+		<li class="nav-item markdown-editor-nav-item">
+			<a class="nav-link markdown-editor-preview-link" href="#">
+				Предпросмотр
+			</a>
+		</li>
+	</ul>
+	<div class="markdown-editor-tab-content card card-body">
+		<textarea
+			class="markdown-editor-source"
+			{% if name %}name="{{name}}"{% endif %}
+			{% if id %}id="{{id}}"{% endif %}>{{text}}</textarea>
+	</div>
+</div>
+{% endmacro %}
