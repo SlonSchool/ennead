@@ -48,7 +48,7 @@ def require_teacher(func: Callable) -> Callable:
     return wrapped
 
 def require_student(func: Callable) -> Callable:
-    """Make endpoint require logged in teacher"""
+    """Make endpoint require logged in student"""
 
     # pylint: disable=inconsistent-return-statements
     @wraps(func)
