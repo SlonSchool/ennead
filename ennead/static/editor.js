@@ -1,4 +1,4 @@
-window.onload = function() {
+window.addEventListener('load', function() {
     var editors = document.getElementsByClassName('markdown-editor');
     for (let editor of editors) {
         var sourceLink = editor.getElementsByClassName('markdown-editor-source-link')[0];
@@ -44,4 +44,4 @@ window.onload = function() {
             }
         }
     }
-}
+});
