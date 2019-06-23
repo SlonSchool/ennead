@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование задач{% endblock %}
+
+{% block body %}
+    <h2>Задачи {{task_set.name}}</h2>
+    {% for task in task_set.tasks %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>
+                        {{task.name}}
+                    </h3>
+                </div>
+                <div class="card-text text-muted">
+                    Баллы: {{task.base_score}}
+                </div>
+                <a href="{{url_for('task_edit_page', task_id=task.id)}}">
+                    Редактировать
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+    <h2>Добавить задачу</h2>
+    {% include 'task_edit_form.html' %}
+{% endblock %}
