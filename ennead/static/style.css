@@ -62,10 +62,20 @@
 	background-color: white;
 }
 
-.post-date {
+.post-header {
 	font-size: 0.75em;
 	color: #555;
 }
+
+.post-date {
+	display: inline-block;
+}
+
+.post-author {
+	display: inline-block;
+	margin-right: 10px;
+}
+
 #post-textarea {
 	width: 100%;
 }

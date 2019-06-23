@@ -22,7 +22,12 @@
 					{% set post_klass = 'post-student' %}
 				{%endif%}
 				<div class="post {{post_klass}} ">
-					<div class="post-date">{{ post.date.strftime('%d %B, %H:%M') }}</div>
+					<div class="post-header">
+						{% if g.user.is_teacher %}
+							<div class="post-author">{{ post.author.username }}</div>
+						{% endif %}
+						<div class="post-date">{{ post.date.strftime('%d %B, %H:%M') }}</div>
+					</div>
 					<div class="post-body">{{ post.text }}</div>
 				</div>
 			{% endfor %}
