@@ -32,7 +32,7 @@ def task_edit() -> Response:
 
     if request.form['id']:
         try:
-            task = Task.get(Task.id == int(request.form['id']))
+            task = Task.get_by_id(int(request.form['id']))
         except Task.DoesNotExist:
             abort(404)
         except ValueError:
