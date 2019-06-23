@@ -64,9 +64,9 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     app.add_url_rule('/login', 'login', login, methods=['POST'])
     app.add_url_rule('/logout', 'logout', logout)
     
-    app.add_url_rule('/student_thread_page/<int:task_id>', 'student_thread_page', student_thread_page)
-    app.add_url_rule('/teacher_thread_page/<int:task_id>/<int:student_id>', 'teacher_thread_page', teacher_thread_page)
-    app.add_url_rule('/send_post_to_thread/<int:thread_id>', 'send_post_to_thread', send_post_to_thread, methods=['POST'])
+    app.add_url_rule('/thread/<int:task_id>', 'student_thread_page', student_thread_page)
+    app.add_url_rule('/thread/<int:task_id>/<int:student_id>', 'teacher_thread_page', teacher_thread_page)
+    app.add_url_rule('/thread/<int:thread_id>', 'send_post_to_thread', send_post_to_thread, methods=['POST'])
     app.add_url_rule('/update_score/<int:thread_id>', 'update_score', update_score, methods=['POST'])
 
     app.add_url_rule('/adm/tasks', 'adm_task_list_page', adm_task_list_page)
