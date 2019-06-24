@@ -2,15 +2,30 @@ from typing import Any
 
 import redis
 from markdown import Markdown
+from markdown.util import etree as ElementTree
 from markdown.extensions import Extension as MarkdownExtension
+from markdown.inlinepatterns import IMAGE_LINK_RE, ImageInlineProcessor
 
 
 class DisallowHTML(MarkdownExtension):
     """Simple extension for Python-Markdown that disallows HTML"""
 
-    def extendMarkdown(self, md):
+    def extendMarkdown(self, md: Markdown) -> None:
         md.preprocessors.deregister('html_block')
         md.inlinePatterns.deregister('html')
+
+
+class BetterImages(ImageInlineProcessor):
+    """Return a clickable image from the given match with additional classes"""
+
+    def handleMatch(self, m, data):
+        image, m_start, index = super().handleMatch(m, data)
+        image.set('class', 'markdown-image img-thumbnail')
+        elem = ElementTree.Element('a')
+        elem.set('href', image.get('src'))
+        elem.set('target', '_blank')
+        elem.append(image)
+        return elem, m_start, index
 
 
 class DictCache(dict):
@@ -26,7 +41,14 @@ class CachedMarkdown:
     """Cached markdown renderer"""
 
     def __init__(self):
-        self.engine = Markdown(extensions=['mdx_math', 'fenced_code', DisallowHTML()])
+        self.engine = Markdown(
+            extensions=['mdx_math', 'fenced_code', 'nl2br', DisallowHTML()]
+        )
+        self.engine.inlinePatterns.register(
+            BetterImages(IMAGE_LINK_RE, self.engine),
+            'image_link',
+            150
+        )
         try:
             self.cache_engine = redis.Redis()
             self.cache_engine.ping()

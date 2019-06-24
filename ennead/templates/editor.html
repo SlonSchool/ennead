@@ -15,12 +15,20 @@
 			</a>
 		</li>
 	</ul>
-	<div class="markdown-editor-tab-content card card-body">
-		<textarea
-			class="markdown-editor-source"
-			{% if name %}name="{{name}}"{% endif %}
-			{% if id %}id="{{id}}"{% endif %}>{{text}}</textarea>
-		<div class="markdown-editor-preview d-none"></div>
+	<div class="markdown-editor-tab-content card">
+		<div class="card-body">
+			<textarea
+				class="markdown-editor-source"
+				{% if name %}name="{{name}}"{% endif %}
+				{% if id %}id="{{id}}"{% endif %}>{{text}}</textarea>
+			<div class="markdown-editor-preview d-none"></div>
+		</div>
+		<ul class="file-uploader list-group list-group-flush">
+			<li class="list-group-item">
+				<input class="d-none file-uploader-input" type="file">
+				<a class="card-link file-uploader-link" href="javascript:void(0)">Загрузить файл</a>
+			</li>
+		</ul>
 	</div>
 </div>
 {% endmacro %}

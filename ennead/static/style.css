@@ -16,6 +16,7 @@
 }
 
 .markdown-editor-source {
+	width: 100%;
 	border: 0;
 	resize: none;
 	height: 15em;
@@ -32,4 +33,13 @@
 
 .nav-tabs .nav-item.markdown-editor-nav-item {
 	margin-bottom: -2px;
+}
+
+.markdown-image {
+	display: block;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 70%;
 }

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Файлы{% endblock %}
+
+{% block body %}
+  <h2>Файлы</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Пользователь</th>
+        <th>Файл</th>
+        <th>Дата</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for file in files %}
+        <tr>
+          <td>{{file.user.first_name}} {{file.user.surname}} ({{file.user.username}})</td>
+          <td><a href="/upload/{{file.path}}" target="_blank">{{file.name}}</a></td>
+          <td>{{file.uploaded_at}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

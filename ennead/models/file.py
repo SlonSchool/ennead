@@ -1,11 +1,13 @@
 """Module for Ennead file model"""
 
 import os
-import uuid
+import secrets
+import datetime
 
-from peewee import CharField, FixedCharField
+from peewee import CharField, DateTimeField, FixedCharField, ForeignKeyField
 
 from ennead.models.base import BaseModel
+from ennead.models.user import User
 
 
 class FileCreationError(Exception):
@@ -16,21 +18,34 @@ class File(BaseModel):
     """One file, uploaded to server
 
     Attributes:
-        path: real path to file on server
-        uuid: file UUID as string
+        user: user who uploaded file
         name: filename as specified on upload
+        token: short token for path
     """
 
-    path: str = CharField()
-    uuid: str = FixedCharField(36)
+    user: User = ForeignKeyField(User, backref='+')
     name: str = CharField()
+    token: str = FixedCharField(8)
+    uploaded_at: datetime.datetime = DateTimeField()
+
+    @property
+    def path(self) -> str:
+        """path of file relative to upload dir"""
+
+        return f'{self.token}/{self.name}'
 
     @classmethod
-    def from_data(cls, directory: str, name: str, data: bytes) -> 'File':
+    def from_data(cls, directory: str, name: str, data: bytes, user: User) -> 'File':
         """Save file to directory and create DB entry for it"""
 
-        file_uuid = str(uuid.uuid4())
-        dir_path = os.path.join(os.path.realpath(directory), file_uuid)
+        file_entry = cls()
+        file_entry.user = user
+        file_entry.name = name
+        file_entry.token = secrets.token_urlsafe(8)
+        file_entry.uploaded_at = datetime.datetime.now()
+        file_entry.save()
+
+        dir_path = os.path.join(os.path.realpath(directory), file_entry.token)
         os.mkdir(dir_path)
         full_path = os.path.normpath(os.path.join(dir_path, name))
         if not full_path.startswith(dir_path):
@@ -38,11 +53,5 @@ class File(BaseModel):
 
         with open(full_path, 'wb') as file:
             file.write(data)
-
-        file_entry = cls()
-        file_entry.name = name
-        file_entry.path = full_path
-        file_entry.uuid = file_uuid
-        file_entry.save()
 
         return file_entry
