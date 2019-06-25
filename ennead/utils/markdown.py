@@ -16,7 +16,7 @@ class DisallowHTML(MarkdownExtension):
 
 
 class BetterImages(ImageInlineProcessor):
-    """Return a clickable image from the given match with additional classes"""
+    """Return a clickable & zoomable image from the given match with additional classes"""
 
     def handleMatch(self, m, data):
         image, m_start, index = super().handleMatch(m, data)
@@ -24,6 +24,7 @@ class BetterImages(ImageInlineProcessor):
         elem = ElementTree.Element('a')
         elem.set('href', image.get('src'))
         elem.set('target', '_blank')
+        elem.set('data-lity', '')
         elem.append(image)
         return elem, m_start, index
 
