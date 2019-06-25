@@ -49,10 +49,13 @@ def post_to_thread(task_id: int, student_id: int) -> Response:
 
     text = request.form['text'].strip()
     hide_from_student = g.user.is_teacher and request.form.get('hide_from_student', False)
-    score = request.form.get('score', thread.score)
 
     if correct_message(text):
-        thread.update(score=score).execute()
+        if g.user.is_teacher:
+            score = request.form.get('score')
+            if thread.score != score:
+                thread.update(score=score).execute()
+
         post = Post.create(text=text, date=datetime.datetime.now(),
                             author=g.user, thread=thread,
                             hide_from_student=hide_from_student)
