@@ -38,6 +38,7 @@ class Task(BaseModel):
     Attributes:
         name: human-readable name of `Task`
         description: `Task` description in Markdown
+        solution: correct `Task` solution and comments about inspection of works
         base_score: basic maximal score for `Task`
         task_set: set this `Task` belongs to
         order_num: order of this `Task` in a `TaskSet`
@@ -46,6 +47,7 @@ class Task(BaseModel):
 
     name: str = CharField()
     description: str = TextField()
+    solution: str = TextField()
     base_score: int = IntegerField()
     order_num: int = IntegerField()
     task_set: TaskSet = ForeignKeyField(TaskSet, backref='tasks')
@@ -57,3 +59,9 @@ class Task(BaseModel):
         """`Task` description in HTML"""
 
         return render_markdown(self.description)
+
+    @property
+    def solution_html_description(self):
+        """`Task` solution in HTML"""
+
+        return render_markdown(self.solution)

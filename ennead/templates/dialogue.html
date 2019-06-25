@@ -8,6 +8,9 @@
 			<h3>{{ task.order_num }}. {{ task.name }}</h3>
 			<p class="score">Балл: {{ thread.score }} из {{ task.base_score }}</p>
 			<div class="task-description">{{ task.html_description|safe }}</div>
+			{% if g.user.is_teacher %}
+				<div class="task-solution">{{ task.solution_html_description|safe }}</div>
+			{% endif %}
 		</div>
 	</div>
 	<div class="row">
