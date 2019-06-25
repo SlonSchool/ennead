@@ -12,7 +12,7 @@
 	</div>
 	<div class="row">
 		<div class="col-8 offset-2">
-			{% for post in thread.ordered_posts(show_hidden=g.user.is_teacher): %}
+			{% for post in posts: %}
 				{% if post.author.is_teacher %}
 					{% if post.hide_from_student %}
 						{% set post_klass = 'post-teacher-hidden' %}
@@ -37,7 +37,7 @@
 	<div class="row">
 		<div class="col-8 offset-2">
 			<hr/>
-			<form id="post-form" action="{{ url_for('send_post_to_thread', thread_id=thread.id) }}" method="POST">
+			<form id="post-form" action="{{ url_for('post_to_thread', task_id=task.id, student_id=student.id) }}" method="POST">
 				<textarea name="text" placeholder="Решение задачи" id="post-textarea"></textarea>
 				{% if g.user.is_teacher: %}
 					<div class="form-check">
@@ -46,27 +46,15 @@
 					    Скрыть комментарий от школьника
 					  </label>
 					</div>
-				{% endif %}
-				<button class="btn btn-primary float-right" type="submit">Отправить</button>
-			</form>
-		</div>
-	</div>
-	{% if g.user.is_teacher %}
-		<hr/>
-		<div class="row score-form">
-			<div class="col-4 offset-4">
-				<form action="{{ url_for('update_score', thread_id=thread.id) }}" method="POST">
 					<div class="form-group row">
 						<label for="score-setter" class="col-form-label col-2">Балл:</label>
 						<div class="col-5">
 							<input type="text" pattern="\d+(\.\d*)?" name="score" value={{ thread.score }} class="form-control" id="score-setter">
 						</div>
-						<div class="col-5">
-							<button class="btn btn-primary" type="submit">Оценить</button>
-						</div>
 					</div>
-				</form>
-			</div>
+				{% endif %}
+				<button class="btn btn-primary float-right" type="submit">Отправить</button>
+			</form>
 		</div>
-    {% endif %}
+	</div>
 {% endblock %}

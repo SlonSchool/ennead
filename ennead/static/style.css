@@ -54,6 +54,7 @@
 	background-color: #ccf;
 }
 .post-teacher-hidden {
+	/* ToDo: not sure, that it's good to use right align for code */
 	text-align: right;
 	background-color: lightgray;
 }

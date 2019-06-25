@@ -12,47 +12,51 @@ from ennead.models.user import User, UserGroup
 from ennead.models.task import Task
 from ennead.models.thread import Thread, Post
 
+def has_access_to_thread(student_id):
+    return g.user.is_teacher or (g.user.is_student and (g.user.id == student_id))
 
-@require_student
-def student_thread_page(task_id: int) -> Response:
-    """GET /student_thread_page/{task}: show student's thread for a specified task"""
-    task = Task.get_by_id(task_id)
-    thread, _ = Thread.get_or_create(task=task_id, student=g.user)
-    return render_template('dialogue.html', task=task, thread=thread)
-
-@require_teacher
-def teacher_thread_page(task_id: int, student_id: int) -> Response:
-    """GET /teacher_thread_page/{task}: show student's thread for a specified task"""
-    task = Task.get_by_id(task_id)
-    student = User.get_by_id(student_id)
-    thread, _ = Thread.get_or_create(task=task_id, student=student)
-    return render_template('dialogue.html', task=task, thread=thread)
-
-
-@require_logged_in
-def send_post_to_thread(thread_id: int) -> Response:
-    thread = Thread.get_by_id(thread_id)
-    text = request.form['text'].strip()
-    correct_message = (len(text) != 0)
+def markdown_valid(text):
     try:
         render_markdown(text)
+        return True
     except:
-        correct_message = False
-        # Not sure is it possible to create incorrect markdown, but if yes, we shouldn't store it
-        # ToDo: redirect back to a dialogue, restoring a message draft not to lose it
-    if correct_message and (g.user.is_teacher or (g.user.is_student and thread.student == g.user)):
-        hide_from_student = False
-        if g.user.is_teacher:
-            hide_from_student = request.form.get('hide_from_student', False)
-        post = Post.create(text=text, date=datetime.datetime.now(), author=g.user, thread=thread, hide_from_student=hide_from_student)
-    if g.user.is_student:
-        return redirect(url_for('student_thread_page', task_id=thread.task.id))
-    if g.user.is_teacher:
-        return redirect(url_for('teacher_thread_page', task_id=thread.task.id, student_id=thread.student.id))
+        # Not sure is it possible to create incorrect markdown
+        return False
 
-@require_teacher
-def update_score(thread_id: int) -> Response:
-    thread = Thread.get_by_id(thread_id)
-    thread.score = request.form.get('score', thread.score)
-    thread.save()
-    return redirect(url_for('teacher_thread_page', task_id=thread.task.id, student_id=thread.student.id))
+def get_thread(task_id, student_id):
+    task = Task.get_by_id(task_id)
+    student = User.get_by_id(student_id)
+    thread, _ = Thread.get_or_create(task=task, student=student)
+    return thread
+
+def correct_message(text):
+    return (len(text) != 0) and markdown_valid(text)
+
+@require_logged_in
+def thread_page(task_id: int, student_id: int) -> Response:
+    """GET /thread/{task}/{student}: show student's thread for a specified task"""
+    if not has_access_to_thread(student_id):
+        return redirect(url_for('index'))
+    thread = get_thread(task_id, student_id)
+    posts = thread.ordered_posts(show_hidden=g.user.is_teacher)
+    return render_template('dialogue.html', thread=thread, task=thread.task, student=thread.student, posts=posts)
+
+@require_logged_in
+def post_to_thread(task_id: int, student_id: int) -> Response:
+    if not has_access_to_thread(student_id):
+        return redirect(url_for('index'))
+    thread = get_thread(task_id, student_id)
+
+    text = request.form['text'].strip()
+    hide_from_student = g.user.is_teacher and request.form.get('hide_from_student', False)
+    score = request.form.get('score', thread.score)
+
+    if correct_message(text):
+        thread.update(score=score).execute()
+        post = Post.create(text=text, date=datetime.datetime.now(),
+                            author=g.user, thread=thread,
+                            hide_from_student=hide_from_student)
+    else:
+        # ToDo: redirect back to a dialogue, restoring a message draft not to lose it
+        pass
+    return redirect(url_for('thread', task_id=task_id, student_id=student_id))
