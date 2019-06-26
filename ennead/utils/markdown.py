@@ -1,3 +1,5 @@
+"""Module with properly configured Markdown renderer"""
+
 from typing import Any
 
 import redis
