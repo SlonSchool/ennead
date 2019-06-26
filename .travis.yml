@@ -1,8 +1,8 @@
 language: python
 install:
     - pip install .
-    - pip install mypy pylint flake8
+    - pip install mypy pylint flake8 pylint-fail-under
 script:
     - mypy ennead
-    - pylint ennead
+    - pylint-fail-under --fail_under 9.0 ennead
     - flake8 ennead
