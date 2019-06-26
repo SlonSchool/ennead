@@ -60,11 +60,17 @@ class CachedMarkdown:
         """Convert Markdown to HTML, or get from cache if already converted"""
 
         cache_key = f'md:{markdown}'
-        html = self.cache_engine.get(cache_key)
+        try:
+            html = self.cache_engine.get(cache_key)
+        except redis.exceptions.RedisError:
+            html = None
         if html is None:
             html = self.engine.convert(markdown)
             # Cache expires in one week
-            self.cache_engine.set(cache_key, html, ex=(7 * 24 * 60 * 60))
+            try:
+                self.cache_engine.set(cache_key, html, ex=(7 * 24 * 60 * 60))
+            except redis.exceptions.RedisError:
+                pass
         return html
 
 
