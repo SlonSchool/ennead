@@ -1,0 +1,8 @@
+language: python
+install:
+    - pip install .
+    - pip install mypy pylint flake8
+script:
+    - mypy ennead
+    - pylint ennead
+    - flake8 ennead
