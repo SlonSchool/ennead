@@ -14,7 +14,8 @@ window.addEventListener('load', function() {
             continue;
         }
 
-        sourceLink.onclick = function() {
+        sourceLink.onclick = function(event) {
+            event.preventDefault();
             if (editorTextarea.classList.contains('d-none')) {
                 editorTextarea.classList.remove('d-none');
                 preview.classList.add('d-none');
@@ -23,7 +24,8 @@ window.addEventListener('load', function() {
             }
         }
 
-        previewLink.onclick = function() {
+        previewLink.onclick = function(event) {
+            event.preventDefault();
             if (preview.classList.contains('d-none')) {
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
