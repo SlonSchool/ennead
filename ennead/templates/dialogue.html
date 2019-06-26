@@ -13,18 +13,20 @@
 			{% endif %}
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-8 offset-2">
-			{% for post in posts: %}
-				{% if post.author.is_teacher %}
-					{% if post.hide_from_student %}
-						{% set post_klass = 'post-teacher-hidden' %}
-					{% else %}
-						{% set post_klass = 'post-teacher' %}
-					{% endif %}
-				{%else%}
-					{% set post_klass = 'post-student' %}
-				{%endif%}
+	{% for post in posts: %}
+		{% if post.author.is_teacher %}
+			{% set offset_class = 'offset-1' %}
+			{% if post.hide_from_student %}
+				{% set post_klass = 'post-teacher-hidden' %}
+			{% else %}
+				{% set post_klass = 'post-teacher' %}
+			{% endif %}
+		{%else%}
+			{% set offset_class = '' %}
+			{% set post_klass = 'post-student' %}
+		{%endif%}
+		<div class="row">
+			<div class="col-11 {{offset_class}}">
 				<div class="post {{post_klass}} ">
 					<div class="post-header">
 						{% if g.user.is_teacher %}
@@ -34,9 +36,9 @@
 					</div>
 					<div class="post-body">{{ post.html_description|safe }}</div>
 				</div>
-			{% endfor %}
+			</div>
 		</div>
-	</div>
+	{% endfor %}
 	<div class="row">
 		<div class="col-8 offset-2">
 			<hr/>
