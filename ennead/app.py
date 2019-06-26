@@ -54,7 +54,12 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     app.add_url_rule('/adm/tasks', 'adm_task_list_page', adm_task_list_page)
     app.add_url_rule('/adm/tasks/<int:task_id>', 'task_edit_page', task_edit_page)
     app.add_url_rule('/adm/tasks', 'task_edit', task_edit, methods=['POST'])
-    app.add_url_rule('/adm/tasks/<int:task_id>/delete', 'task_delete', task_delete, methods=['POST'])
+    app.add_url_rule(
+        '/adm/tasks/<int:task_id>/delete',
+        'task_delete',
+        task_delete,
+        methods=['POST']
+    )
 
     return app
 
