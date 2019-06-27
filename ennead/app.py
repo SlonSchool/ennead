@@ -9,8 +9,11 @@ from ennead.config import Config
 from ennead.views.auth import register, register_page, login, login_page, logout
 from ennead.views.tasks import index
 from ennead.views.admin import adm_task_list_page, task_edit_page, task_edit, task_delete
+from ennead.views.system import render_markdown_endpoint
+from ennead.views.file import upload_file, uploaded_file, files_page
 
 from ennead.models.base import database
+from ennead.models.file import File
 from ennead.models.user import User
 from ennead.models.task import TaskSet, Task
 from ennead.models.thread import Thread, Post
@@ -39,11 +42,16 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     app.config.from_object(config)
 
     database.initialize(config.DB_CLASS(config.DB_NAME, **config.DB_PARAMS))
-    database.create_tables([User, Task, TaskSet, Thread, Post])
+    database.create_tables([User, Task, TaskSet, Thread, Post, File])
 
     app.before_request(inject_user)
 
     app.add_url_rule('/', 'index', index)
+    app.add_url_rule('/md', 'render_markdown_endpoint', render_markdown_endpoint, methods=['POST'])
+
+    app.add_url_rule('/upload/<path:filename>', 'uploaded_file', uploaded_file)
+    app.add_url_rule('/upload', 'upload_file', upload_file, methods=['POST'])
+    app.add_url_rule('/adm/files', 'files_page', files_page)
 
     app.add_url_rule('/register', 'register_page', register_page)
     app.add_url_rule('/register', 'register', register, methods=['POST'])

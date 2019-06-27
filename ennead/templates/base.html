@@ -10,12 +10,19 @@
 			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 			crossorigin="anonymous">
 
+		<link rel="stylesheet"
+		      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/github.min.css">
+		<link rel="stylesheet"
+			  href="https://cdnjs.cloudflare.com/ajax/libs/lity/2.3.1/lity.min.css">
+
 		<link rel="stylesheet" href="/static/style.css">
 		<link rel="stylesheet" href="/static/icons.css">
 		<!-- Entypo pictograms by Daniel Bruce — www.entypo.com -->
 
 		{% block head %}
 		{% endblock %}
+
+		{% from 'editor.html' import markdown_editor %}
 	</head>
 	<body>
 		<nav class="navbar navbar-light bg-light align-baseline navbar-toggleable-sm navbar-expand-sm mb-2">
@@ -28,6 +35,11 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{url_for('adm_task_list_page')}}">
 							Редактирование задач
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{url_for('files_page')}}">
+							Файлы
 						</a>
 					</li>
 				{% endif %}
@@ -62,5 +74,14 @@
 			{% block body %}
 			{% endblock %}
 		</div>
+
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lity/2.3.1/lity.min.js"></script>
+		<script src="/static/editor.js"></script>
+		<script>
+			hljs.initHighlightingOnLoad();
+		</script>
 	</body>
 </html>
