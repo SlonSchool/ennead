@@ -1,6 +1,6 @@
 """Module with properly configured Markdown renderer"""
 
-from typing import Any
+from typing import Optional, Dict
 
 import redis
 from markdown import Markdown
@@ -31,13 +31,25 @@ class BetterImages(ImageInlineProcessor):
         return elem, m_start, index
 
 
-class DictCache(dict):
+class DictCache:
     """Dict with .set() method auto-encoding values"""
 
-    def set(self, key: str, value: str, **_: Any) -> None:
+    cache: Dict[str, bytes]
+
+    def __init__(self):
+        self.cache = dict()
+
+    def set(self, key: str, value: str) -> None:
         """Set value at key to value.encode('utf-8')"""
 
-        self[key] = value.encode('utf-8')
+        self.cache[key] = value.encode('utf-8')
+
+    def get(self, key: str, default: Optional[str] = None) -> Optional[str]:
+        """Get and decode value at key"""
+
+        if key in self.cache:
+            return self.cache[key].decode('utf-8')
+        return default
 
 
 class CachedMarkdown:
