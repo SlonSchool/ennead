@@ -61,7 +61,10 @@ class User(BaseModel):
     def set_password(self, new_password: str) -> None:
         """Generate salt and set new password for `User`"""
 
-        self.password_salt = secrets.token_urlsafe(32)
+        # secrets.token_urlsafe() argument is not token length.
+        # It's number of random bytes used, to generate token
+        # 24 bytes gives us 32 characters
+        self.password_salt = secrets.token_urlsafe(24)
         self.password_sha512 = self._hash_password(new_password)
 
     def check_password(self, password: str) -> bool:
