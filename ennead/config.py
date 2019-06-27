@@ -2,7 +2,7 @@
 
 import os
 import json
-from typing import Dict
+from typing import Dict, Union
 from dataclasses import dataclass, field, fields
 from urllib.parse import urlparse
 
@@ -21,7 +21,7 @@ class Config:  # pylint: disable=invalid-name
 
     DB_TYPE: str = 'sqlite'
     DB_NAME: str = ':memory:'
-    DB_PARAMS: Dict[str, str] = field(default_factory=dict)
+    DB_PARAMS: Dict[str, Union[str, int, None]] = field(default_factory=dict)
     TEACHER_SECRET: str = 'muchsecret'
     SECRET_KEY: str = 'boomboomboom'  # For Flask
     UPLOAD_DIR: str = '/tmp/ennead'
@@ -56,7 +56,9 @@ class Config:  # pylint: disable=invalid-name
             result.DB_NAME = parsed_url.path[1:]  # Stripping leading slash
             result.DB_PARAMS = {
                 'user': parsed_url.username,
-                'password': parsed_url.password
+                'password': parsed_url.password,
+                'host': parsed_url.hostname,
+                'port': (int(parsed_url.port) if parsed_url.port else None)
             }
         return result
 
