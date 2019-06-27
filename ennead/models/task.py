@@ -38,7 +38,7 @@ class Task(BaseModel):
     Attributes:
         name: human-readable name of `Task`
         description: `Task` description in Markdown
-        solution: correct `Task` solution and comments about inspection of works
+        solution: correct `Task` solution and comments about work review process
         base_score: basic maximal score for `Task`
         task_set: set this `Task` belongs to
         order_num: order of this `Task` in a `TaskSet`
