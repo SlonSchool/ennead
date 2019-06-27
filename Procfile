@@ -1,1 +1,1 @@
-web: gunicorn ennead.app
+web: gunicorn ennead.app:create_app()
