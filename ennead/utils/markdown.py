@@ -1,6 +1,6 @@
 """Module with properly configured Markdown renderer"""
 
-from typing import Optional, Dict
+from typing import Any, Optional, Dict
 
 import redis
 from markdown import Markdown
@@ -39,7 +39,7 @@ class DictCache:
     def __init__(self):
         self.cache = dict()
 
-    def set(self, key: str, value: str) -> None:
+    def set(self, key: str, value: str, **_: Any) -> None:
         """Set value at key to value.encode('utf-8')"""
 
         self.cache[key] = value.encode('utf-8')
