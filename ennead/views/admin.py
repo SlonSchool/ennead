@@ -3,7 +3,10 @@
 from flask import abort, redirect, render_template, request, url_for
 from werkzeug.wrappers import Response
 
+from peewee import PeeweeException
+
 from ennead.utils import require_teacher
+from ennead.models.base import database
 from ennead.models.task import Task, TaskSet
 
 
@@ -11,7 +14,13 @@ from ennead.models.task import Task, TaskSet
 def adm_task_list_page() -> Response:
     """GET /adm/tasks: list of tasks & creation of new"""
 
-    return render_template('adm_task_list.html', task_set=TaskSet.get(active=True))
+    task_set = None
+    try:
+        task_set = TaskSet.get(active=True)
+    except TaskSet.DoesNotExist:
+        pass
+
+    return render_template('adm_task_list.html', task_set=task_set, task_set_list=TaskSet.select())
 
 
 @require_teacher
@@ -61,4 +70,50 @@ def task_delete(task_id: int) -> Response:
     """DELETE /adm/tasks/<task_id>: delete a task"""
 
     Task.delete().where(Task.id == task_id).execute()
+    return redirect(url_for('adm_task_list_page'))
+
+
+@require_teacher
+def add_task_set() -> Response:
+    """POST /adm/task_set: add a new task set"""
+
+    if 'name' not in request.form:
+        abort(400)
+
+    task_set = TaskSet()
+    task_set.name = request.form['name']
+    task_set.active = True
+
+    with database.atomic() as transaction:
+        try:
+            TaskSet.update({TaskSet.active: False}).execute(database)
+            task_set.save()
+        except PeeweeException:
+            transaction.rollback()
+            abort(500)
+
+    return redirect(url_for('adm_task_list_page'))
+
+
+@require_teacher
+def choose_task_set() -> Response:
+    """"POST /adm/task_set/choose: select active task set"""
+
+    if 'task_set' not in request.form:
+        abort(400)
+
+    try:
+        task_set = TaskSet.get_by_id(int(request.form['task_set']))
+    except (ValueError, TypeError, TaskSet.DoesNotExist):
+        abort(400)
+
+    task_set.active = True
+    with database.atomic() as transaction:
+        try:
+            TaskSet.update({TaskSet.active: False}).execute(database)
+            task_set.save()
+        except PeeweeException:
+            transaction.rollback()
+            abort(500)
+
     return redirect(url_for('adm_task_list_page'))
