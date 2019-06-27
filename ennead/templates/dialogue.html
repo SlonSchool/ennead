@@ -17,17 +17,17 @@
 		{% if post.author.is_teacher %}
 			{% set offset_class = 'offset-1' %}
 			{% if post.hide_from_student %}
-				{% set post_klass = 'post-teacher-hidden' %}
+				{% set post_class = 'post-teacher-hidden' %}
 			{% else %}
-				{% set post_klass = 'post-teacher' %}
+				{% set post_class = 'post-teacher' %}
 			{% endif %}
 		{%else%}
 			{% set offset_class = '' %}
-			{% set post_klass = 'post-student' %}
+			{% set post_class = 'post-student' %}
 		{%endif%}
 		<div class="row">
 			<div class="col-11 {{offset_class}}">
-				<div class="post {{post_klass}} ">
+				<div class="post {{post_class}} ">
 					<div class="post-header">
 						{% if g.user.is_teacher %}
 							<div class="post-author">{{ post.author.username }}</div>
