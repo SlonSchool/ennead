@@ -53,8 +53,12 @@
     background-color: #ccf;
 }
 .post-teacher-hidden {
-    background-color: lightgray;
+    background-color: #aaa;
 }
+.bg-secondary.text-white .text-muted, .bg-dark.text-white .text-muted {
+    color: white!important;
+}
+
 .post-student {
     text-align: left;
     background-color: white;
