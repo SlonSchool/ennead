@@ -41,7 +41,7 @@ class File(BaseModel):
         file_entry = cls()
         file_entry.user = user
         file_entry.name = name
-        file_entry.token = secrets.token_urlsafe(8)
+        file_entry.token = secrets.token_urlsafe(6)  # token_urlsafe(6) produces 8 characters
         file_entry.uploaded_at = datetime.datetime.now()
         file_entry.save()
 
