@@ -9,7 +9,7 @@ from werkzeug.wrappers import Response
 from ennead.utils.markdown import render_markdown
 
 
-__all__ = ['require_logged_in', 'require_not_logged_in', 'require_teacher', 'render_markdown']
+__all__ = ['require_logged_in', 'require_not_logged_in', 'require_teacher', 'require_student', 'render_markdown']
 
 
 def require_logged_in(func: Callable) -> Callable:
