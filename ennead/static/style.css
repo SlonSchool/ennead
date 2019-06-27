@@ -1,79 +1,79 @@
 /* Fix for Bootstrap 4 broken navbar baseline */
 .nav-link, .navbar-text, .nav-item > .btn {
-	margin-top: 0.125rem;
+    margin-top: 0.125rem;
 }
 
 /* Fix for Bootstrap 4 broken navbar buttons & text margin */
 .nav-item > .btn, .navbar-text{
-	margin-left: 0.1rem;
-	margin-right: 0.1rem;
+    margin-left: 0.1rem;
+    margin-right: 0.1rem;
 }
 
 .btn.icon::before {
-	margin-right: 0.4em;
-	position: relative;
-	top: 0.05em;
+    margin-right: 0.4em;
+    position: relative;
+    top: 0.05em;
 }
 
 .markdown-editor-source {
-	width: 100%;
-	border: 0;
-	resize: none;
-	height: 15em;
+    width: 100%;
+    border: 0;
+    resize: none;
+    height: 15em;
 }
 
 .markdown-editor-preview {
-	min-height: 15em;
+    min-height: 15em;
 }
 
 .markdown-editor-tab-content {
-	border-radius: 0 0 0.25rem 0.25rem;
-	border-top: 0;
+    border-radius: 0 0 0.25rem 0.25rem;
+    border-top: 0;
 }
 
 .nav-tabs .nav-item.markdown-editor-nav-item {
-	margin-bottom: -2px;
+    margin-bottom: -2px;
 }
 
 .markdown-image {
-	display: block;
-	margin-top: 1em;
-	margin-bottom: 1em;
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 70%;
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 70%;
 }
 
 .post {
-	border: 1px solid black;
-	margin: 10px 0;
-	padding: 10px;
+    border: 1px solid black;
+    margin: 10px 0;
+    padding: 10px;
 }
 .post-teacher {
-	background-color: #ccf;
+    background-color: #ccf;
 }
 .post-teacher-hidden {
-	background-color: lightgray;
+    background-color: lightgray;
 }
 .post-student {
-	text-align: left;
-	background-color: white;
+    text-align: left;
+    background-color: white;
 }
 
 .post-header {
-	font-size: 0.75em;
-	color: #555;
+    font-size: 0.75em;
+    color: #555;
 }
 
 .post-date {
-	display: inline-block;
+    display: inline-block;
 }
 
 .post-author {
-	display: inline-block;
-	margin-right: 10px;
+    display: inline-block;
+    margin-right: 10px;
 }
 
 #post-textarea {
-	width: 100%;
+    width: 100%;
 }

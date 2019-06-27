@@ -1,34 +1,34 @@
 {% macro markdown_editor(text='', name='', id='') %}
 {% if not id %}
-	{% set id = name %}
+    {% set id = name %}
 {% endif %}
 <div class="markdown-editor">
-	<ul class="nav nav-tabs markdown-editor-tabs">
-		<li class="nav-item markdown-editor-nav-item">
-			<a class="nav-link active markdown-editor-source-link" href="#">
-				Редактирование
-			</a>
-		</li>
-		<li class="nav-item markdown-editor-nav-item">
-			<a class="nav-link markdown-editor-preview-link" href="#">
-				Предпросмотр
-			</a>
-		</li>
-	</ul>
-	<div class="markdown-editor-tab-content card">
-		<div class="card-body">
-			<textarea
-				class="markdown-editor-source"
-				{% if name %}name="{{name}}"{% endif %}
-				{% if id %}id="{{id}}"{% endif %}>{{text}}</textarea>
-			<div class="markdown-editor-preview d-none"></div>
-		</div>
-		<ul class="file-uploader list-group list-group-flush">
-			<li class="list-group-item">
-				<input class="d-none file-uploader-input" type="file">
-				<a class="card-link file-uploader-link" href="javascript:void(0)">Загрузить файл</a>
-			</li>
-		</ul>
-	</div>
+    <ul class="nav nav-tabs markdown-editor-tabs">
+        <li class="nav-item markdown-editor-nav-item">
+            <a class="nav-link active markdown-editor-source-link" href="#">
+                Редактирование
+            </a>
+        </li>
+        <li class="nav-item markdown-editor-nav-item">
+            <a class="nav-link markdown-editor-preview-link" href="#">
+                Предпросмотр
+            </a>
+        </li>
+    </ul>
+    <div class="markdown-editor-tab-content card">
+        <div class="card-body">
+            <textarea
+                class="markdown-editor-source"
+                {% if name %}name="{{name}}"{% endif %}
+                {% if id %}id="{{id}}"{% endif %}>{{text}}</textarea>
+            <div class="markdown-editor-preview d-none"></div>
+        </div>
+        <ul class="file-uploader list-group list-group-flush">
+            <li class="list-group-item">
+                <input class="d-none file-uploader-input" type="file">
+                <a class="card-link file-uploader-link" href="javascript:void(0)">Загрузить файл</a>
+            </li>
+        </ul>
+    </div>
 </div>
 {% endmacro %}
