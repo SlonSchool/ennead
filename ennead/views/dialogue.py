@@ -15,14 +15,6 @@ from ennead.models.thread import Thread, Post
 def has_access_to_thread(student_id):
     return g.user.is_teacher or (g.user.is_student and (g.user.id == student_id))
 
-def markdown_valid(text):
-    try:
-        render_markdown(text)
-        return True
-    except:
-        # Not sure is it possible to create incorrect markdown
-        return False
-
 def get_thread(task_id, student_id):
     task = Task.get_by_id(task_id)
     student = User.get_by_id(student_id)
@@ -30,7 +22,7 @@ def get_thread(task_id, student_id):
     return thread
 
 def correct_message(text):
-    return (len(text) != 0) and markdown_valid(text)
+    return (len(text) != 0)
 
 @require_logged_in
 def thread_page(task_id: int, student_id: int) -> Response:
