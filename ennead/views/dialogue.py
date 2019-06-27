@@ -47,8 +47,8 @@ def thread_page(task_id: int, student_id: int) -> Response:
         return redirect(url_for('index'))
     thread = get_thread(task_id, student_id)
     posts = thread.ordered_posts(show_hidden=g.user.is_teacher)
-    return render_template('dialogue.html', thread=thread, task=thread.task,
-                           student=thread.student, posts=posts)
+    return render_template('dialogue.html', thread=thread, posts=posts,
+                           msg_value='', score_value=thread.score)
 
 
 @require_logged_in
@@ -67,8 +67,11 @@ def post_to_thread(task_id: int, student_id: int) -> Response:
                     author=g.user, thread=thread,
                     hide_from_student=hide_from_student)
     else:
-        # TODO: redirect back to a dialogue, restoring a message draft not to lose it
-        pass
+        # Right now, unnecessary because only empty message can be incorrect
+        posts = thread.ordered_posts(show_hidden=g.user.is_teacher)
+        return render_template('dialogue.html', thread=thread, posts=posts,
+                               msg_value=request.form.get('text'),
+                               score_value=request.form.get('score'))
 
     if g.user.is_teacher:
         score = float(request.form.get('score'))
