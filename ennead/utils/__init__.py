@@ -9,7 +9,11 @@ from werkzeug.wrappers import Response
 from ennead.utils.markdown import render_markdown
 
 
-__all__ = ['require_logged_in', 'require_not_logged_in', 'require_teacher', 'require_student', 'render_markdown']
+__all__ = [
+    'require_logged_in', 'require_not_logged_in',
+    'require_teacher', 'require_student',
+    'render_markdown',
+]
 
 
 def require_logged_in(func: Callable) -> Callable:
@@ -22,6 +26,7 @@ def require_logged_in(func: Callable) -> Callable:
         return func(*args, **kwargs)
 
     return wrapped
+
 
 def require_not_logged_in(func: Callable) -> Callable:
     """Make endpoint require NOT logged in user"""
@@ -46,6 +51,7 @@ def require_teacher(func: Callable) -> Callable:
         abort(403)
 
     return wrapped
+
 
 def require_student(func: Callable) -> Callable:
     """Make endpoint require logged in student"""

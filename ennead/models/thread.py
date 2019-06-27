@@ -3,13 +3,14 @@
 import datetime
 from typing import List
 
-from peewee import DateTimeField, IntegerField, DecimalField, TextField, BooleanField, ForeignKeyField
+from peewee import DateTimeField, DecimalField, TextField, BooleanField, ForeignKeyField
 
 from ennead.models.user import User
 from ennead.models.task import Task
 from ennead.models.base import BaseModel
 
 from ennead.utils import render_markdown
+
 
 class Thread(BaseModel):
     """Student-with-teachers chat about `Task`
@@ -33,7 +34,6 @@ class Thread(BaseModel):
             posts = filter(lambda post: not post.hide_from_student, posts)
         posts = sorted(posts, key=lambda post: post.date)
         return posts
-    
 
 
 class Post(BaseModel):
