@@ -28,6 +28,18 @@ def correct_message(text):
 
 
 @require_logged_in
+def change_thread_score(thread: Thread, score: float) -> None:
+    """Change thread score (if necessary) and notify student in a dialog"""
+
+    if thread.score != score:
+        score_change_msg = f"Балл изменен. Текущий балл: {score}."
+        Post.create(text=score_change_msg, date=datetime.datetime.now(),
+                    author=g.user, thread=thread,
+                    hide_from_student=False)
+        thread.update(score=score).execute()
+
+
+@require_logged_in
 def thread_page(task_id: int, student_id: int) -> Response:
     """GET /thread/{task}/{student}: show specified thread"""
 
@@ -51,15 +63,15 @@ def post_to_thread(task_id: int, student_id: int) -> Response:
     hide_from_student = g.user.is_teacher and request.form.get('hide_from_student', False)
 
     if correct_message(text):
-        if g.user.is_teacher:
-            score = request.form.get('score')
-            if thread.score != score:
-                thread.update(score=score).execute()
-
         Post.create(text=text, date=datetime.datetime.now(),
                     author=g.user, thread=thread,
                     hide_from_student=hide_from_student)
     else:
         # TODO: redirect back to a dialogue, restoring a message draft not to lose it
         pass
+
+    if g.user.is_teacher:
+        score = float(request.form.get('score'))
+        change_thread_score(thread, score)
+
     return redirect(url_for('thread', task_id=task_id, student_id=student_id))
