@@ -54,7 +54,7 @@
 					<div class="form-group row">
 						<label for="score-setter" class="col-form-label col-2">Балл:</label>
 						<div class="col-5">
-							<input type="text" pattern="\d+(\.\d*)?" name="score" value={{ thread.score }} class="form-control" id="score-setter">
+							<input type="number" step="any" name="score" value={{ thread.score }} class="form-control" id="score-setter">
 						</div>
 					</div>
 				{% endif %}
