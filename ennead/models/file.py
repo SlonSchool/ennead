@@ -46,7 +46,7 @@ class File(BaseModel):
         file_entry.save()
 
         dir_path = os.path.join(os.path.realpath(directory), file_entry.token)
-        os.mkdir(dir_path)
+        os.makedirs(dir_path)
         full_path = os.path.normpath(os.path.join(dir_path, name))
         if not full_path.startswith(dir_path + os.sep):
             raise FileCreationError(f"{name} doesn't seems like correct file name")
