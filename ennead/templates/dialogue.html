@@ -13,7 +13,7 @@
 			{% endif %}
 		</div>
 	</div>
-	{% for post in posts: %}
+	{% for post in posts %}
 		{% if post.author.is_teacher %}
 			{% set offset_class = 'offset-1' %}
 			{% if post.hide_from_student %}
@@ -44,7 +44,7 @@
 			<hr/>
 			<form id="post-form" action="{{ url_for('post_to_thread', task_id=task.id, student_id=student.id) }}" method="POST">
 				<textarea name="text" placeholder="Решение задачи" id="post-textarea"></textarea>
-				{% if g.user.is_teacher: %}
+				{% if g.user.is_teacher %}
 					<div class="form-check">
 					  <input class="form-check-input" type="checkbox" name="hide_from_student" value="hide_from_student" id="hide_from_student">
 					  <label class="form-check-label" for="hide_from_student">
