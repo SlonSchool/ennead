@@ -60,6 +60,6 @@ def post_to_thread(task_id: int, student_id: int) -> Response:
                             author=g.user, thread=thread,
                             hide_from_student=hide_from_student)
     else:
-        # ToDo: redirect back to a dialogue, restoring a message draft not to lose it
+        # TODO: redirect back to a dialogue, restoring a message draft not to lose it
         pass
     return redirect(url_for('thread', task_id=task_id, student_id=student_id))
