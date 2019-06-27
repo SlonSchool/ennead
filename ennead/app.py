@@ -35,10 +35,14 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     """Create Flask app from JSON config (or with defaults)"""
 
     app = Flask(__name__)
+    config = None
     if config_path:
-        config = Config.from_filename(config_path)
-    else:
-        config = Config()
+        try:
+            config = Config.from_filename(config_path)
+        except FileNotFoundError:
+            pass
+    if config is None:
+        config = Config.from_env()
     app.config.from_object(config)
 
     database.initialize(config.DB_CLASS(config.DB_NAME, **config.DB_PARAMS))

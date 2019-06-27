@@ -1,8 +1,9 @@
 """App configuration class for Ennead"""
 
+import os
 import json
 from typing import Dict
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 
 from peewee import Database, SqliteDatabase, PostgresqlDatabase
 
@@ -33,6 +34,21 @@ class Config:
             config_data = json.load(config_file)
             for key, value in config_data.items():
                 setattr(result, key, value)
+        return result
+
+    @classmethod
+    def from_env(cls) -> 'Config':
+        """Read Config params from system environment"""
+
+        result = cls()
+        for config_field in fields(result):
+            # TODO: handling non-str fields
+            if config_field.type == str:
+                setattr(
+                    result,
+                    config_field.name,
+                    os.environ.get(config_field.name, getattr(cls, config_field.name))
+                )
         return result
 
     @property
