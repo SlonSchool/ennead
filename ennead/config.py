@@ -4,12 +4,13 @@ import os
 import json
 from typing import Dict
 from dataclasses import dataclass, field, fields
+from urllib.parse import urlparse
 
 from peewee import Database, SqliteDatabase, PostgresqlDatabase
 
 
 @dataclass
-class Config:
+class Config:  # pylint: disable=invalid-name
     """App configuration
 
     db_type: database driver (currently `postgres` or `sqlite`)
@@ -49,10 +50,18 @@ class Config:
                     config_field.name,
                     os.environ.get(config_field.name, getattr(cls, config_field.name))
                 )
+        if os.environ.get('DATABASE_URL'):
+            parsed_url = urlparse(os.environ['DATABASE_URL'])
+            result.DB_TYPE = parsed_url.scheme
+            result.DB_NAME = parsed_url.path[1:]  # Stripping leading slash
+            result.DB_PARAMS = {
+                'user': parsed_url.username,
+                'password': parsed_url.password
+            }
         return result
 
     @property
-    def DB_CLASS(self) -> Database:  # pylint: disable=invalid-name
+    def DB_CLASS(self) -> Database:
         """peewee class representing chosen database"""
 
         if self.DB_TYPE == 'sqlite':
