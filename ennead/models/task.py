@@ -61,7 +61,7 @@ class Task(BaseModel):
         return render_markdown(self.description)
 
     @property
-    def solution_html_description(self):
+    def html_solution(self):
         """`Task` solution in HTML"""
 
         return render_markdown(self.solution)

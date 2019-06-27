@@ -9,7 +9,7 @@
 			<p class="score">Балл: {{ thread.score }} из {{ task.base_score }}</p>
 			<div class="task-description">{{ task.html_description|safe }}</div>
 			{% if g.user.is_teacher %}
-				<div class="task-solution">{{ task.solution_html_description|safe }}</div>
+				<div class="task-solution">{{ task.html_solution|safe }}</div>
 			{% endif %}
 		</div>
 	</div>
@@ -34,7 +34,7 @@
 						{% endif %}
 						<div class="post-date">{{ post.date.strftime('%d %B, %H:%M') }}</div>
 					</div>
-					<div class="post-body">{{ post.html_description|safe }}</div>
+					<div class="post-body">{{ post.html_text|safe }}</div>
 				</div>
 			</div>
 		</div>

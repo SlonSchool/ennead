@@ -54,7 +54,7 @@ class Post(BaseModel):
     thread: Thread = ForeignKeyField(Thread, backref='posts')
 
     @property
-    def html_description(self):
-        """`Post` description in HTML"""
+    def html_text(self):
+        """`Post` text in HTML"""
 
         return render_markdown(self.text)
