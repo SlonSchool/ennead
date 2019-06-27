@@ -44,7 +44,7 @@ task_set = TaskSet.create(name='Текущая заочка', active=True)
 task_1_1 = Task.create(order_num=1, name='Очень старая задача #1', description='Когда трава была зеленее', solution="Как-нибудь проверим", base_score=1, task_set=prev_task_set)
 task_1_2 = Task.create(order_num=2, name='Очень старая задача #2', description='И задачи были забористей', solution="Как-нибудь проверим", base_score=1, task_set=prev_task_set)
 
-task_2_1 = Task.create(order_num=1, name='Задача первая', description='Начнём с простого: $$2+2=?$$', solution="Ноль баллов обычно.\n\nПолный балл за $$2+2=4$$", base_score=1, task_set=task_set)
+task_2_1 = Task.create(order_num=1, name='Задача первая', description='Начнём с простого: $$2+2=?$$', solution="Ноль баллов обычно.\nПолный балл за $$2+2=4$$", base_score=1, task_set=task_set)
 task_2_2 = Task.create(order_num=3, name='Задача последняя', description='Хардкор', solution="Как-нибудь проверим", base_score=42, task_set=task_set)
 task_2_3 = Task.create(order_num=2, name='Задача два', description='Посложнее', solution="Как-нибудь проверим", base_score=5, task_set=task_set)
 
