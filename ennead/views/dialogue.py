@@ -26,7 +26,8 @@ def correct_message(text):
 
 @require_logged_in
 def thread_page(task_id: int, student_id: int) -> Response:
-    """GET /thread/{task}/{student}: show student's thread for a specified task"""
+    """GET /thread/{task}/{student}: show specified thread"""
+
     if not has_access_to_thread(student_id):
         return redirect(url_for('index'))
     thread = get_thread(task_id, student_id)
@@ -35,6 +36,8 @@ def thread_page(task_id: int, student_id: int) -> Response:
 
 @require_logged_in
 def post_to_thread(task_id: int, student_id: int) -> Response:
+    """POST /thread/{task}/{student}: send a message to a specified thread"""
+
     if not has_access_to_thread(student_id):
         return redirect(url_for('index'))
     thread = get_thread(task_id, student_id)
