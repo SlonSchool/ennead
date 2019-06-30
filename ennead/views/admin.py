@@ -1,5 +1,7 @@
 """Views, used for task creation and editing"""
 
+from typing import Any, Dict
+
 from flask import abort, redirect, render_template, request, url_for
 from werkzeug.wrappers import Response
 
@@ -15,8 +17,15 @@ def adm_task_list_page() -> Response:
     """GET /adm/tasks: list of tasks & creation of new"""
 
     task_set = None
+    task_set_criterion: Dict[str, Any] = {'active': True}
+    task_set_id = request.args.get('task_set')
+    if isinstance(task_set_id, (str, int)):
+        try:
+            task_set_criterion = {'id': int(task_set_id)}
+        except (TypeError, ValueError):
+            abort(400)
     try:
-        task_set = TaskSet.get(active=True)
+        task_set = TaskSet.get(**task_set_criterion)
     except TaskSet.DoesNotExist:
         pass
 

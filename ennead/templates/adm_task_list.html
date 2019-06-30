@@ -2,11 +2,52 @@
 
 {% block title %}Редактирование задач{% endblock %}
 
+{% set current_task_set = task_set %}
+
+{% block head %}
+    <script>
+        window.addEventListener('load', function() {
+            var taskSetSelector = document.getElementById('task_set_selector');
+            taskSetSelector.addEventListener('change', function() {
+                window.location.href = '?task_set=' + taskSetSelector.value;
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
+    <div class="mt-2 mb-3">
+        <form method="POST" action="{{url_for('choose_task_set')}}">
+            <div class="form-row mb-2 mr-0">
+                <div class="col-md-10">
+                    <select id="task_set_selector" name="task_set" class="custom-select">
+                        {% for task_set in task_set_list %}
+                            <option value="{{task_set.id}}"
+                                {% if task_set.id == current_task_set.id %}selected{% endif %}>
+                                {{task_set.name}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input
+                    type="submit"
+                    class="btn btn-primary col-md-2"
+                    value="Сделать активным"
+                    {% if task_set.active %}disabled{% endif %}>
+            </div>
+        </form>
+        <form method="POST" action="{{url_for('add_task_set')}}">
+            <div class="form-row mr-0">
+                <div class="col-md-10">
+                    <input name="name" id="name" class="form-control">
+                </div>
+                <input type="submit" class="btn btn-primary col-md-2" value="Добавить набор задач">
+            </div>
+        </form>
+    </div>
     {% if task_set %}
-        <h2>Задачи {{task_set.name}}</h2>
         {% for task in task_set.tasks %}
-            <div class="card mb-3">
+            <div class="card mb-2">
                 <div class="card-body">
                     <div class="card-title">
                         <h3>
@@ -25,28 +66,4 @@
         <h2>Добавить задачу</h2>
         {% include 'task_edit_form.html' %}
     {% endif %}
-    <div class="mt-5 mb-5">
-        <form method="POST" action="{{url_for('choose_task_set')}}">
-            <div class="form-row mb-2">
-                <div class="col-md-10">
-                    <select id="task_set" name="task_set" class="custom-select">
-                        {% for task_set in task_set_list %}
-                            <option value="{{task_set.id}}" {% if task_set.active %}selected{% endif %}>
-                                {{task_set.name}}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <input type="submit" class="btn btn-primary col-md-2" value="Выбрать набор задач">
-            </div>
-        </form>
-        <form method="POST" action="{{url_for('add_task_set')}}">
-            <div class="form-row">
-                <div class="col-md-10">
-                    <input name="name" id="name" class="form-control">
-                </div>
-                <input type="submit" class="btn btn-primary col-md-2" value="Добавить набор задач">
-            </div>
-        </form>
-    </div>
 {% endblock %}
