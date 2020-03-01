@@ -6,11 +6,12 @@ from flask import Flask, g, session
 
 from ennead.config import Config
 
+from ennead.views.file import upload_file, uploaded_file, files_page
 from ennead.views.auth import register, register_page, login, login_page, logout
 from ennead.views.tasks import index
-from ennead.views.admin import adm_task_list_page, task_edit_page, task_edit, task_delete
 from ennead.views.system import render_markdown_endpoint
-from ennead.views.file import upload_file, uploaded_file, files_page
+from ennead.views.admin import (adm_task_list_page, add_task_set, choose_task_set,
+                                task_edit_page, task_edit, task_delete)
 
 from ennead.models.base import database
 from ennead.models.file import File
@@ -62,6 +63,9 @@ def create_app(config_path: Optional[str] = None) -> Flask:
     app.add_url_rule('/login', 'login_page', login_page)
     app.add_url_rule('/login', 'login', login, methods=['POST'])
     app.add_url_rule('/logout', 'logout', logout)
+
+    app.add_url_rule('/adm/task_set', 'add_task_set', add_task_set, methods=['POST'])
+    app.add_url_rule('/adm/task_set/choose', 'choose_task_set', choose_task_set, methods=['POST'])
 
     app.add_url_rule('/adm/tasks', 'adm_task_list_page', adm_task_list_page)
     app.add_url_rule('/adm/tasks/<int:task_id>', 'task_edit_page', task_edit_page)
