@@ -76,13 +76,19 @@ class User(BaseModel):
         )
 
     @property
+    def is_student(self) -> bool:
+        """Check is user a student"""
+
+        return self.group == UserGroup.student
+
+    @property
     def is_teacher(self) -> bool:
         """Check is user a teacher"""
 
         return self.group == UserGroup.teacher
 
     @property
-    def score(self) -> int:
+    def score(self) -> float:
         """Get `User`s score in current task set"""
 
         return sum(

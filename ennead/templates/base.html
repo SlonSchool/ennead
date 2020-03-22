@@ -1,87 +1,87 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>{% block title %}{% endblock %}{% if self.title() %} — {% endif %}Ennead</title>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}{% if self.title() %} — {% endif %}Ennead</title>
 
-		<link
-			rel="stylesheet"
-			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-			crossorigin="anonymous">
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous">
 
-		<link rel="stylesheet"
-		      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/github.min.css">
-		<link rel="stylesheet"
-			  href="https://cdnjs.cloudflare.com/ajax/libs/lity/2.3.1/lity.min.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/github.min.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/lity/2.3.1/lity.min.css">
 
-		<link rel="stylesheet" href="/static/style.css">
-		<link rel="stylesheet" href="/static/icons.css">
-		<!-- Entypo pictograms by Daniel Bruce — www.entypo.com -->
+        <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" href="/static/icons.css">
+        <!-- Entypo pictograms by Daniel Bruce — www.entypo.com -->
 
-		{% block head %}
-		{% endblock %}
+        {% block head %}
+        {% endblock %}
 
-		{% from 'editor.html' import markdown_editor %}
-	</head>
-	<body>
-		<nav class="navbar navbar-light bg-light align-baseline navbar-toggleable-sm navbar-expand-sm mb-2">
-			<a class="navbar-brand" href="{{url_for('index')}}">Ennead</a>
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="{{url_for('index')}}">Задачи</a>
-				</li>
-				{% if g.user.is_teacher %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{url_for('adm_task_list_page')}}">
-							Редактирование задач
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{url_for('files_page')}}">
-							Файлы
-						</a>
-					</li>
-				{% endif %}
-			</ul>
-			<ul class="navbar-nav">
-				{% if not g.user %}
-					<li class="nav-item">
-						<a class="icon icon-login btn btn-primary" href="{{url_for('login_page')}}">Вход</a>
-					</li>
-					<li class="nav-item">
-						<a class="icon icon-add-user btn btn-secondary" href="{{url_for('register_page')}}">Регистрация</a>
-					</li>
-				{% else %}
-					<li class="nav-item">
-						<a class="icon icon-user btn btn-primary" href="#">{{g.user.username}}</a>
-					</li>
-					<li class="nav-item">
-						<a class="icon icon-log-out btn btn-secondary" href="{{url_for('logout')}}">Выход</a>
-					</li>
-				{% endif %}
-			</ul>
-		</nav>
+        {% from 'editor.html' import markdown_editor %}
+    </head>
+    <body>
+        <nav class="navbar navbar-light bg-light align-baseline navbar-toggleable-sm navbar-expand-sm mb-2">
+            <a class="navbar-brand" href="{{url_for('index')}}">Ennead</a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('index')}}">Задачи</a>
+                </li>
+                {% if g.user.is_teacher %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('adm_task_list_page')}}">
+                            Редактирование задач
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('files_page')}}">
+                            Файлы
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav">
+                {% if not g.user %}
+                    <li class="nav-item">
+                        <a class="icon icon-login btn btn-primary" href="{{url_for('login_page')}}">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="icon icon-add-user btn btn-secondary" href="{{url_for('register_page')}}">Регистрация</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="icon icon-user btn btn-primary" href="#">{{g.user.username}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="icon icon-log-out btn btn-secondary" href="{{url_for('logout')}}">Выход</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
 
-		<div class="container">
-			{% if splash_text %}
-				<div class="row">
-					<div class="col-8 offset-2 alert alert-danger">
-						{{splash_text}}
-					</div>
-				</div>
-			{% endif %}
-			{% block body %}
-			{% endblock %}
-		</div>
+        <div class="container">
+            {% if splash_text %}
+                <div class="row">
+                    <div class="col-8 offset-2 alert alert-danger">
+                        {{splash_text}}
+                    </div>
+                </div>
+            {% endif %}
+            {% block body %}
+            {% endblock %}
+        </div>
 
-		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/lity/2.3.1/lity.min.js"></script>
-		<script src="/static/editor.js"></script>
-		<script>
-			hljs.initHighlightingOnLoad();
-		</script>
-	</body>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lity/2.3.1/lity.min.js"></script>
+        <script src="/static/editor.js"></script>
+        <script>
+            hljs.initHighlightingOnLoad();
+        </script>
+    </body>
 </html>

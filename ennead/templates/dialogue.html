@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% set task=thread.task %}
+{% set student=thread.student %}
+{% block title %}{{task.order_num}}. {{ task.name }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-10 offset-1">
+            <div class="card">
+                <div class="card-header d-flex">
+                    <div class="mr-auto"><h3>{{ task.order_num }}. {{ task.name }}</h3></div>
+                    <span class="score text-right text-muted align-bottom">Балл: {{ thread.score }} из {{ task.base_score }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-text task-description">{{ task.html_description|safe }}</div>
+                </div>
+            </div>
+            {% if g.user.is_teacher %}
+                <div class="card my-2 bg-dark text-white">
+                    <h5 class="card-header">Критерии проверки</h5>
+                    <div class="card-body">
+                        <div class="card-text">{{ task.html_solution|safe }}</div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% for post in posts %}
+        {% if post.author.is_teacher %}
+            {% set offset_class = 'offset-2' %}
+            {% if post.hide_from_student %}
+                {% set post_class = 'post-teacher-hidden bg-secondary text-white' %}
+            {% else %}
+                {% set post_class = 'post-teacher' %}
+            {% endif %}
+        {%else%}
+            {% set offset_class = 'offset-1' %}
+            {% set post_class = 'post-student' %}
+        {%endif%}
+        <div class="row">
+            <div class="col-9 {{offset_class}}">
+                <div class="card {{post_class}} my-1">
+                    <div class="card-body py-1">
+                        <p class="card-text text-right mb-0">
+                            <small class="text-muted">
+                                {% if g.user.is_teacher %}
+                                    <span class="post-author">{{ post.author.username }}</span>
+                                {% endif %}
+                                <span class="post-date">{{ post.date.strftime('%d %B, %H:%M') }}</span>
+                            </small>
+                        </p>
+                        <div class="card-text">{{ post.html_text|safe }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-9 offset-1">
+            <hr/>
+            <form id="post-form" action="{{ url_for('post_to_thread', task_id=task.id, student_id=student.id) }}" method="POST">
+                {{ markdown_editor(text=msg_value, name='text', id='post-textarea') }}
+                {% if g.user.is_teacher %}
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="hide_from_student" value="hide_from_student" id="hide_from_student">
+                      <label class="form-check-label" for="hide_from_student">
+                        Скрыть комментарий от школьника
+                      </label>
+                    </div>
+                    <div class="form-group row">
+                        <label for="score-setter" class="col-form-label col-2">Балл:</label>
+                        <div class="col-5">
+                            <input type="number" step="any" name="score" value={{ score_value }} class="form-control" id="score-setter">
+                        </div>
+                    </div>
+                {% endif %}
+                <button class="btn btn-primary float-right" type="submit">Отправить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
